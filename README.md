@@ -1,3 +1,3 @@
 Hi c:
 
-![Alt text](./contributions.svg)
+![Contributions](contributions.svg)
