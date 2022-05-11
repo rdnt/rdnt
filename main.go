@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"log"
 	"math"
@@ -48,24 +49,25 @@ func main() {
 	}
 
 	var cols []Col
+	var total int
 
 	for k, c := range contribs {
+		total += c.Count
+
 		z := float64(c.Count*2 + 2)
 
 		i := float64(k / 7)
 		j := float64(k % 7)
 
-		var pts []Vector3
-
 		size := float64(10)
 		space := float64(12)
 
+		var pts []Vector3
 		// top
 		pts = append(pts, Vector3{X: space * i, Y: space * j, Z: -z})
 		pts = append(pts, Vector3{X: space*i + size, Y: space * j, Z: -z})
 		pts = append(pts, Vector3{X: space*i + size, Y: space*j + size, Z: -z})
 		pts = append(pts, Vector3{X: space * i, Y: space*j + size, Z: -z})
-
 		// bottom
 		pts = append(pts, Vector3{X: space * i, Y: space * j, Z: 0})
 		pts = append(pts, Vector3{X: space*i + size, Y: space * j, Z: 0})
@@ -93,14 +95,16 @@ func main() {
 		_ = fl.Close()
 	}()
 
-	renderSvg(cols, Dark, fd)
-	renderSvg(cols, Light, fl)
+	renderSvg(cols, total, Dark, fd)
+	renderSvg(cols, total, Light, fl)
 }
 
-func renderSvg(cols []Col, mode Mode, f io.Writer) {
+func renderSvg(cols []Col, total int, mode Mode, f io.Writer) {
 	canvas := svg.New(f)
 	// approximate size should do for now
 	canvas.Start(840, 400)
+
+	canvas.Text(660, 40, fmt.Sprint(total, " Contributions"), "fill: #adbac7; text-align: right; font-size: 18px; font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji'; font-weight: 600;")
 
 	for _, c := range cols {
 		// each column has 3 visible faces.
