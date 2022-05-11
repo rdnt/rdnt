@@ -1,4 +1,4 @@
 Hi c:
 
-[![Contributions](assets/contributions-dark.svg#gh-dark-mode-only)](http://github.com/rdnt)
-[![Contributions](assets/contributions-light.svg#gh-light-mode-only)](http://github.com/rdnt)
+[![Contributions](assets/contributions-dark.svg)](http://github.com/rdnt#gh-dark-mode-only)
+[![Contributions](assets/contributions-light.svg)](http://github.com/rdnt#gh-light-mode-only)
