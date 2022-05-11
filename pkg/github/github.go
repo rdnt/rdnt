@@ -2,22 +2,20 @@ package github
 
 import (
 	"context"
-	"os"
 	"time"
 
 	githubql "github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
 )
 
-type Contribution struct {
-	Count int
-}
-
-func Contributions(ctx context.Context) ([]Contribution, error) {
+// ContributionsPerDay returns the number of contributions per day (sorted by date ascending) for the past 365 days.
+func ContributionsPerDay(ctx context.Context, username string, accessToken string) ([]int, error) {
 	src := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: os.Getenv("ACCESS_TOKEN")},
+		&oauth2.Token{AccessToken: accessToken},
 	)
+
 	httpClient := oauth2.NewClient(ctx, src)
+	
 	c := githubql.NewClient(httpClient)
 
 	var query struct {
@@ -38,7 +36,7 @@ func Contributions(ctx context.Context) ([]Contribution, error) {
 	to := time.Now().In(time.UTC)
 
 	v := map[string]interface{}{
-		"login": githubql.String(os.Getenv("USERNAME")),
+		"login": githubql.String(username),
 		"from":  githubql.DateTime{Time: from},
 		"to":    githubql.DateTime{Time: to},
 	}
@@ -48,13 +46,11 @@ func Contributions(ctx context.Context) ([]Contribution, error) {
 		return nil, err
 	}
 
-	var contributions []Contribution
+	var contributions []int
 
 	for _, w := range query.User.ContributionsCollection.ContributionCalendar.Weeks {
 		for _, d := range w.ContributionDays {
-			contributions = append(contributions, Contribution{
-				Count: d.ContributionCount,
-			})
+			contributions = append(contributions, d.ContributionCount)
 		}
 	}
 
