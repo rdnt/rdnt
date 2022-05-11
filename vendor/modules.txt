@@ -1,0 +1,34 @@
+# github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
+## explicit; go 1.15
+github.com/ajstarks/svgo/float
+# github.com/akrennmair/slice v0.0.0-20220105203817-49445747ab81
+## explicit; go 1.18
+github.com/akrennmair/slice
+# github.com/golang/protobuf v1.3.2
+## explicit
+github.com/golang/protobuf/proto
+# github.com/shurcooL/githubv4 v0.0.0-20220115235240-a14260e6f8a2
+## explicit
+github.com/shurcooL/githubv4
+# github.com/shurcooL/graphql v0.0.0-20200928012149-18c5c3165e3a
+## explicit
+github.com/shurcooL/graphql
+github.com/shurcooL/graphql/ident
+github.com/shurcooL/graphql/internal/jsonutil
+# golang.org/x/net v0.0.0-20210226172049-e18ecbb05110
+## explicit; go 1.11
+golang.org/x/net/context
+golang.org/x/net/context/ctxhttp
+# golang.org/x/oauth2 v0.0.0-20180821212333-d2e6202438be
+## explicit
+golang.org/x/oauth2
+golang.org/x/oauth2/internal
+# google.golang.org/appengine v1.6.7
+## explicit; go 1.11
+google.golang.org/appengine/internal
+google.golang.org/appengine/internal/base
+google.golang.org/appengine/internal/datastore
+google.golang.org/appengine/internal/log
+google.golang.org/appengine/internal/remote_api
+google.golang.org/appengine/internal/urlfetch
+google.golang.org/appengine/urlfetch
