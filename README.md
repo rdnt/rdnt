@@ -1,3 +1,3 @@
 Hi c:
 
-[![Contributions](contributions.svg)](http://github.com/rdnt)
+[![Contributions](assets/contributions.svg)](http://github.com/rdnt)
