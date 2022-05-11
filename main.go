@@ -90,17 +90,27 @@ func main() {
 		// colors used for the 3 visible faces
 		c1, c2, c3 := faceColors(c.count)
 
+		groupStyle := ""
+		if c.count == 0 {
+			groupStyle = "opacity: 0.5"
+		}
+
+		canvas.Gstyle(groupStyle)
+
 		xs := slice.Map(p1iso, func(vec Vector2) float64 { return vec.X + h })
 		ys := slice.Map(p1iso, func(vec Vector2) float64 { return vec.Y + v })
-		canvas.Polygon(xs, ys, "fill:"+c1)
+		canvas.Polygon(xs, ys, "fill: "+c1)
 
 		xs = slice.Map(p2iso, func(vec Vector2) float64 { return vec.X + h })
 		ys = slice.Map(p2iso, func(vec Vector2) float64 { return vec.Y + v })
-		canvas.Polygon(xs, ys, "fill:"+c2)
+		canvas.Polygon(xs, ys, "fill: "+c2)
 
 		xs = slice.Map(p3iso, func(vec Vector2) float64 { return vec.X + h })
 		ys = slice.Map(p3iso, func(vec Vector2) float64 { return vec.Y + v })
-		canvas.Polygon(xs, ys, "fill:"+c3)
+		canvas.Polygon(xs, ys, "fill: "+c3)
+
+		canvas.Gend()
+
 	}
 
 	// save the svg
