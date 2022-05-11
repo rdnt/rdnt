@@ -21,10 +21,10 @@ jobs:
         env:
           USERNAME: ${{ secrets.USERNAME }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        run: go run main.go > assets/contributions.svg
+        run: go run main.go
       - name: Add & Commit
         uses: EndBug/add-and-commit@v9
         with:
-          add: 'assets/contributions.svg'
+          add: 'assets/contributions-*'
           default_author: github_actions
           message: 'Update contributions.svg'
