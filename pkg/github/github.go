@@ -10,10 +10,7 @@ import (
 )
 
 type Contribution struct {
-	Count   int
-	Weekday int
-	Color   string
-	Date    time.Time
+	Count int
 }
 
 func Contributions(ctx context.Context) ([]Contribution, error) {
@@ -27,8 +24,7 @@ func Contributions(ctx context.Context) ([]Contribution, error) {
 		User struct {
 			ContributionsCollection struct {
 				ContributionCalendar struct {
-					TotalContributions int
-					Weeks              []struct {
+					Weeks []struct {
 						ContributionDays []struct {
 							ContributionCount int
 						}
