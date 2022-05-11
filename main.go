@@ -100,7 +100,7 @@ func main() {
 func renderSvg(cols []Col, mode Mode, f io.Writer) {
 	canvas := svg.New(f)
 	// approximate size should do for now
-	canvas.Start(780, 400)
+	canvas.Start(840, 400)
 
 	for _, c := range cols {
 		// each column has 3 visible faces.
@@ -116,7 +116,7 @@ func renderSvg(cols []Col, mode Mode, f io.Writer) {
 		p3iso := isometricProjection(p3)
 
 		// horizontal & vertical offsets to center the whole chart
-		h, v := float64(150), float64(25)
+		h, v := float64(180), float64(25)
 
 		// colors used for the 3 visible faces
 		c1, c2, c3 := faceColors(c.count, mode)
