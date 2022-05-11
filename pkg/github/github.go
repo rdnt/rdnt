@@ -1,3 +1,4 @@
+// Package github contains useful utilities for interacting with the GitHub API.
 package github
 
 import (
@@ -15,7 +16,7 @@ func ContributionsPerDay(ctx context.Context, username string, accessToken strin
 	)
 
 	httpClient := oauth2.NewClient(ctx, src)
-	
+
 	c := githubql.NewClient(httpClient)
 
 	var query struct {

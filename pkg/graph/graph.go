@@ -1,3 +1,4 @@
+// Package graph allows rendering an isometric projection of a GitHub user's contribution history.
 package graph
 
 import (
