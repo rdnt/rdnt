@@ -49,17 +49,20 @@ func main() {
 
 		var pts []Vector3
 
+		size := float64(10)
+		space := float64(12)
+
 		// top
-		pts = append(pts, Vector3{X: 12 * i, Y: 12 * j, Z: -z})
-		pts = append(pts, Vector3{X: 12*i + 10, Y: 12 * j, Z: -z})
-		pts = append(pts, Vector3{X: 12*i + 10, Y: 12*j + 10, Z: -z})
-		pts = append(pts, Vector3{X: 12 * i, Y: 12*j + 10, Z: -z})
+		pts = append(pts, Vector3{X: space * i, Y: space * j, Z: -z})
+		pts = append(pts, Vector3{X: space*i + size, Y: space * j, Z: -z})
+		pts = append(pts, Vector3{X: space*i + size, Y: space*j + size, Z: -z})
+		pts = append(pts, Vector3{X: space * i, Y: space*j + size, Z: -z})
 
 		// bottom
-		pts = append(pts, Vector3{X: 12 * i, Y: 12 * j, Z: 0})
-		pts = append(pts, Vector3{X: 12*i + 10, Y: 12 * j, Z: 0})
-		pts = append(pts, Vector3{X: 12*i + 10, Y: 12*j + 10, Z: 0})
-		pts = append(pts, Vector3{X: 12 * i, Y: 12*j + 10, Z: 0})
+		pts = append(pts, Vector3{X: space * i, Y: space * j, Z: 0})
+		pts = append(pts, Vector3{X: space*i + size, Y: space * j, Z: 0})
+		pts = append(pts, Vector3{X: space*i + size, Y: space*j + size, Z: 0})
+		pts = append(pts, Vector3{X: space * i, Y: space*j + size, Z: 0})
 
 		cols = append(cols, Col{pts: pts, count: c.Count})
 	}
