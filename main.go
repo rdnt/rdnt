@@ -10,7 +10,7 @@ import (
 	svg "github.com/ajstarks/svgo/float"
 	"github.com/akrennmair/slice"
 
-	"readme/pkg/github"
+	"github.com/rdnt/rdnt/pkg/github"
 )
 
 type Col struct {
@@ -69,7 +69,7 @@ func main() {
 
 	canvas := svg.New(os.Stdout)
 	// approximate size should do for now
-	canvas.Start(880, 450)
+	canvas.Start(780, 400)
 
 	for _, c := range cols {
 		// each column has 3 visible faces.
@@ -85,7 +85,7 @@ func main() {
 		p3iso := isometricProjection(p3)
 
 		// horizontal & vertical offsets to center the whole chart
-		h, v := float64(200), float64(50)
+		h, v := float64(150), float64(25)
 
 		// colors used for the 3 visible faces
 		c1, c2, c3 := faceColors(c.count)

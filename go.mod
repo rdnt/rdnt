@@ -1,4 +1,4 @@
-module readme
+module github.com/rdnt/rdnt
 
 go 1.18
 
