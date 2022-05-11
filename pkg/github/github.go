@@ -30,16 +30,16 @@ func ContributionsPerDay(ctx context.Context, username string, accessToken strin
 					}
 				}
 			} `graphql:"contributionsCollection(from: $from, to: $to)"`
-		} `graphql:"user(login: $login)"`
+		} `graphql:"user(login: $username)"`
 	}
 
 	from := time.Now().AddDate(-1, 0, -7).In(time.UTC)
 	to := time.Now().In(time.UTC)
 
 	v := map[string]interface{}{
-		"login": githubql.String(username),
-		"from":  githubql.DateTime{Time: from},
-		"to":    githubql.DateTime{Time: to},
+		"username": githubql.String(username),
+		"from":     githubql.DateTime{Time: from},
+		"to":       githubql.DateTime{Time: to},
 	}
 
 	err := c.Query(ctx, &query, v)
