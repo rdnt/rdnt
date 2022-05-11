@@ -30,6 +30,13 @@ type Vector3 struct {
 	Z float64
 }
 
+type Mode int
+
+const (
+	Dark Mode = iota
+	Light
+)
+
 func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
@@ -150,13 +157,6 @@ func spaceToIso(x, y, z float64) (h, v float64) {
 
 	return h, v
 }
-
-type Mode int
-
-const (
-	Dark Mode = iota
-	Light
-)
 
 func faceColors(r int, mode Mode) (string, string, string) {
 	switch mode {
