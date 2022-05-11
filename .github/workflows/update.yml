@@ -28,3 +28,4 @@ jobs:
           add: 'contributions.svg'
           default_author: github_actions
           message: 'Update contributions.svg'
+          new_branch: 'assets'
