@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"io"
 	"log"
 	"math"
 	"os"
@@ -67,7 +68,30 @@ func main() {
 		cols = append(cols, Col{pts: pts, count: c.Count})
 	}
 
-	canvas := svg.New(os.Stdout)
+	fd, err := os.Create("assets/contributions-dark.svg")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer func() {
+		_ = fd.Close()
+	}()
+
+	fl, err := os.Create("assets/contributions-light.svg")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer func() {
+		_ = fl.Close()
+	}()
+
+	renderSvg(cols, Dark, fd)
+	renderSvg(cols, Light, fl)
+}
+
+func renderSvg(cols []Col, mode Mode, f io.Writer) {
+	canvas := svg.New(f)
 	// approximate size should do for now
 	canvas.Start(780, 400)
 
@@ -88,14 +112,7 @@ func main() {
 		h, v := float64(150), float64(25)
 
 		// colors used for the 3 visible faces
-		c1, c2, c3 := faceColors(c.count)
-
-		groupStyle := ""
-		if c.count == 0 {
-			groupStyle = "opacity: 0.5"
-		}
-
-		canvas.Gstyle(groupStyle)
+		c1, c2, c3 := faceColors(c.count, mode)
 
 		xs := slice.Map(p1iso, func(vec Vector2) float64 { return vec.X + h })
 		ys := slice.Map(p1iso, func(vec Vector2) float64 { return vec.Y + v })
@@ -108,9 +125,6 @@ func main() {
 		xs = slice.Map(p3iso, func(vec Vector2) float64 { return vec.X + h })
 		ys = slice.Map(p3iso, func(vec Vector2) float64 { return vec.Y + v })
 		canvas.Polygon(xs, ys, "fill: "+c3)
-
-		canvas.Gend()
-
 	}
 
 	// save the svg
@@ -137,16 +151,40 @@ func spaceToIso(x, y, z float64) (h, v float64) {
 	return h, v
 }
 
-func faceColors(r int) (string, string, string) {
-	if r > 10 {
-		return "#39d353", "#10a92c", "#24bd40"
-	} else if r > 7 {
-		return "#26a641", "#007d1a", "#11912e"
-	} else if r > 3 {
-		return "#006d32", "#004307", "#00571b"
-	} else if r > 0 {
-		return "#0e4429", "#001b00", "#002f12"
-	} else {
-		return "#2d333b", "#030a12", "#171e26"
+type Mode int
+
+const (
+	Dark Mode = iota
+	Light
+)
+
+func faceColors(r int, mode Mode) (string, string, string) {
+	switch mode {
+	case Dark:
+		if r > 10 {
+			return "#39d353", "#10a92c", "#24bd40"
+		} else if r > 7 {
+			return "#26a641", "#007d1a", "#11912e"
+		} else if r > 3 {
+			return "#006d32", "#004307", "#00571b"
+		} else if r > 0 {
+			return "#0e4429", "#001b00", "#002f12"
+		} else {
+			return "#2d333b", "#030a12", "#171e26"
+		}
+	case Light:
+		fallthrough
+	default:
+		if r > 10 {
+			return "#216e39", "#004410", "#0c5824"
+		} else if r > 7 {
+			return "#30a14e", "#077725", "#1b8b39"
+		} else if r > 3 {
+			return "#40c463", "#199b3c", "#2daf50"
+		} else if r > 0 {
+			return "#9be9a8", "#73c080", "#87d494"
+		} else {
+			return "#ebedf0", "#c2c5c8", "#d6d9dc"
+		}
 	}
 }
