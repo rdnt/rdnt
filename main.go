@@ -23,7 +23,7 @@ func main() {
 		return
 	}
 	
-	err = os.Mkdir("assets", is.ModePerm)
+	err = os.Mkdir("assets", os.ModePerm)
 	if err != nil && !os.IsExist(err) {
 		log.Println(err)
 		return
