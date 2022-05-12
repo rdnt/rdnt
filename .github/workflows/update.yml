@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   schedule:
     # Runs every hour
-    - cron: "0 * * * *"
+    - cron: "13 * * * *"
 jobs:
   update:
     name: Update
@@ -25,3 +25,9 @@ jobs:
         with:
           branch: assets
           folder: assets
+          git-config-name: github-actions[bot]
+          git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
+          single-commit: true
+          silent: true
+          commit-message: Update contributions graph
+          
