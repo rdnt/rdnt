@@ -8,5 +8,5 @@ Some open-source projects I am currently working on:
 
 If you enjoy my projects here, you can show your support by buying me a coffee to help and motivate me to keep going ❤️
 
-[![Contributions](assets/contributions-dark.svg)](http://github.com/rdnt#gh-dark-mode-only)
-[![Contributions](assets/contributions-light.svg)](http://github.com/rdnt#gh-light-mode-only)
+![Contributions](https://github.com/rdnt/rdnt/blob/assets/contributions-dark.svg?raw=true#gh-dark-mode-only)
+![Contributions](https://github.com/rdnt/rdnt/blob/assets/contributions-light.svg?raw=true#gh-light-mode-only)
