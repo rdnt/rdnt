@@ -1,4 +1,4 @@
-name: Update
+name: Update contributions graph
 on:
   workflow_dispatch:
   schedule:
@@ -6,7 +6,7 @@ on:
     - cron: "13 * * * *"
 jobs:
   update:
-    name: Update
+    name: Update contributions graph
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
