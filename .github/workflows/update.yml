@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.ACCESS_TOKEN }}
       - name: Install go
         uses: actions/setup-go@v3
         with:
@@ -22,9 +20,10 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: go run main.go
-      - name: Add & Commit
-        uses: EndBug/add-and-commit@v9
-        with:
-          add: 'assets/contributions-*'
-          default_author: github_actions
-          message: 'Update contributions.svg'
+      - name: Deploy
+        uses: s0/git-publish-subdir-action@v2.5.1
+        env:
+          REPO: self
+          BRANCH: assets
+          FOLDER: assets
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
