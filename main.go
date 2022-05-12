@@ -22,6 +22,12 @@ func main() {
 		log.Println(err)
 		return
 	}
+	
+	err = os.Mkdir("assets", is.ModePerm)
+	if err != nil && !os.IsExist(err) {
+		log.Println(err)
+		return
+	}
 
 	fd, err := os.Create("assets/contributions-dark.svg")
 	if err != nil {
