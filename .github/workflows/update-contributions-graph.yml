@@ -27,5 +27,5 @@ jobs:
           folder: assets
           git-config-name: github-actions[bot]
           git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
-          single-commit: true
+          single-commit: false
           commit-message: Update contributions graph
