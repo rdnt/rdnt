@@ -25,5 +25,6 @@ jobs:
         with:
           branch: assets
           folder: assets
-          single-commit: true
+          # for some reason it doesn't update if the files keep their name
+          single-commit: false
           commit-message: Update contributions graph
