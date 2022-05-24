@@ -28,3 +28,5 @@ jobs:
           # investigate: for some reason it doesn't update if the files keep their name
           single-commit: true
           commit-message: Update contributions graph
+          git-config-name: github-actions[bot]
+          git-config-email: github-actions[bot]@users.noreply.github.com
