@@ -1,15 +1,16 @@
-Hi :D
+### Hi :D
 
 ![coffee](https://user-images.githubusercontent.com/17600197/179931868-770dfafe-8d43-4975-b739-cda5ffa76c4b.gif)
 
-I write code. A lot of it. Maybe too much.
+Welcome to my GitHub profile!  
+I like writing code. A lot of it. Maybe too much.
 
-Some open-source projects I am currently working on:
-- [**ledctl**](https://github.com/rdnt/ledctl) - A controller written in Go that allows commanding a Raspberry Pi to change colors of an LED strip
-- [**benchkram/bob**](https://github.com/benchkram/bob) - A polyglot build tool with ease-of-use, performance and reproducibility in mind
+Some projects I've been recently working on:
+- [**ledctl**](https://github.com/rdnt/ledctl) - A wireless, easy-to-use LED controller
+- [**myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager
+- [**benchkram/bob**](https://github.com/benchkram/bob) - A build system for microservices
 
-
-If you like my projects, you can show your support by buying me a coffee 💖
+If you like my work here, consider buying me a coffee 💖
 [Ko-Fi](https://ko-fi.com/rdntdev) |
 [PayPal](https://www.paypal.com/paypalme/rdntdev)
 
