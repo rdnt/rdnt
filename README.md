@@ -6,7 +6,7 @@ Welcome to my GitHub profile!
 I like writing code. A lot of it. Maybe too much.
 
 Some projects I've been recently working on:
-- [**ledctl**](https://github.com/rdnt/ledctl) - A wireless, easy-to-use LED controller
+- [**ledctl**](https://github.com/rdnt/ledctl) - A wireless LED controller written in Go
 - [**myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager
 - [**benchkram/bob**](https://github.com/benchkram/bob) - A build system for microservices
 
