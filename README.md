@@ -1,7 +1,7 @@
 ### Hi :D
 
 Welcome to my GitHub profile!  
-I like writing code. A lot of it. Maybe too much.
+I like writing code. A lot. Maybe too much.
 
 ![coffee](https://user-images.githubusercontent.com/17600197/179931868-770dfafe-8d43-4975-b739-cda5ffa76c4b.gif)
 
