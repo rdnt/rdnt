@@ -7,7 +7,7 @@ I like writing code. A lot. Maybe too much.
 
 Some projects I've been recently working on:
 - [**ledctl**](https://github.com/rdnt/ledctl) - A wireless LED controller written in Go
-- [**myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager (coming soon™!)
+#- [**myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager (coming soon™!)
 
 If you like my work here, consider buying me a coffee 💖
 [Ko-Fi](https://ko-fi.com/rdntdev) |
