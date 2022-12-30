@@ -3,7 +3,7 @@
 I'm Tasos, a software engineer based in Thessaloniki, Greece. I enjoy programming, hacking, playing computer games and everything in-between.  
 
 Check out what I've been recently working on:
-- [**ledctl**](https://github.com/rdnt/ledctl) - An ambilight socket-based controller written in Go
+- [**ledctl**](https://github.com/rdnt/ledctl) - A wireless ambilight/music visualizer written in Go
 <!-- - [**myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager (coming soon™!)
  -->
 
