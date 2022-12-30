@@ -10,6 +10,7 @@ Some projects I've been recently working on:
 <!-- - [**myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager (coming soon™!)
  -->
 If you like my work here, consider buying me a coffee 💖
+[Buy Me a Coffee](https://www.buymeacoffee.com/rdntdev) |
 [Ko-Fi](https://ko-fi.com/rdntdev) |
 [PayPal](https://www.paypal.com/paypalme/rdntdev)
 
