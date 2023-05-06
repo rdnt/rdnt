@@ -1,10 +1,10 @@
 ### Hi! 👋
 
-I'm Tasos, a software engineer based in Greece. I enjoy programming, designing stuff, playing computer games, and everything in-between.  
+My name is Tasos, and I am a software engineer based in Greece. I enjoy programming, designing, playing computer games, listening to music, and everything in-between.  
 
 Check out what I've been recently working on:
 - [**ledctl**](https://github.com/rdnt/ledctl) - Wireless Ambient lighting controller written in Go
-- [**m8face**](https://github.com/rdnt/m8face) - A retro, pixelated watch face for WearOS
+- [**m8**](https://github.com/rdnt/m8) - A retro, pixelated watch face for WearOS
 - [**myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager (coming soon™!)
 
 ![Contributions](https://github.com/rdnt/rdnt/blob/assets/contributions-dark.svg?raw=true#gh-dark-mode-only)
