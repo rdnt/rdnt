@@ -1,2 +1,4 @@
-.env*
-.idea
+/.env*
+/*.exe
+/.idea
+/cmd/status/build

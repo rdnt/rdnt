@@ -1,0 +1,7 @@
+mutation changeUserStatus ($status: ChangeUserStatusInput!) {
+  changeUserStatus(input: $status) {
+    status {
+      id
+    }
+  }
+}

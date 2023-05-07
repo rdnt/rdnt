@@ -6,7 +6,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/rdnt/rdnt/pkg/github"
 	"github.com/rdnt/rdnt/pkg/graph"
 )
 
@@ -17,12 +16,12 @@ func main() {
 	username := os.Getenv("USERNAME")
 	accessToken := os.Getenv("ACCESS_TOKEN")
 
-	contribs, err := github.ContributionsPerDay(ctx, username, accessToken)
+	contribs, err := githubold.ContributionsPerDay(ctx, username, accessToken)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	
+
 	err = os.Mkdir("assets", os.ModePerm)
 	if err != nil && !os.IsExist(err) {
 		log.Println(err)

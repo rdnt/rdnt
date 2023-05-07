@@ -1,59 +1,42 @@
-// Package github contains useful utilities for interacting with the GitHub API.
 package github
 
 import (
 	"context"
+	"github.com/Khan/genqlient/graphql"
+	"net/http"
 	"time"
-
-	githubql "github.com/shurcooL/githubv4"
-	"golang.org/x/oauth2"
 )
 
-// ContributionsPerDay returns the number of contributions per day (sorted by date ascending) for the past 365 days.
-func ContributionsPerDay(ctx context.Context, username string, accessToken string) ([]int, error) {
-	src := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: accessToken},
-	)
+// imports needed for genqlient
+import (
+	_ "github.com/Khan/genqlient/generate"
+	_ "github.com/agnivade/levenshtein"
+)
 
-	httpClient := oauth2.NewClient(ctx, src)
+//go:generate go run github.com/Khan/genqlient genql.yaml
 
-	c := githubql.NewClient(httpClient)
+type Client struct {
+	apiURL   string
+	gql      graphql.Client
+	clientId string
+}
 
-	var query struct {
-		User struct {
-			ContributionsCollection struct {
-				ContributionCalendar struct {
-					Weeks []struct {
-						ContributionDays []struct {
-							ContributionCount int
-						}
-					}
-				}
-			} `graphql:"contributionsCollection(from: $from, to: $to)"`
-		} `graphql:"user(login: $username)"`
+func New(apiURL string, httpClient *http.Client) *Client {
+	return &Client{
+		apiURL: apiURL,
+		gql:    graphql.NewClient(apiURL, httpClient),
 	}
+}
 
-	from := time.Now().AddDate(-1, 0, -7).In(time.UTC)
-	to := time.Now().In(time.UTC)
+func (c *Client) ChangeUserStatus(emoji string, expiresAt time.Time, message string, limited bool) error {
+	_, err := changeUserStatus(context.Background(), c.gql, ChangeUserStatusInput{
+		ClientMutationId:    &c.clientId,
+		Emoji:               &emoji,
+		ExpiresAt:           &expiresAt,
+		LimitedAvailability: &limited,
+		Message:             &message,
+		OrganizationId:      nil,
+	})
 
-	v := map[string]interface{}{
-		"username": githubql.String(username),
-		"from":     githubql.DateTime{Time: from},
-		"to":       githubql.DateTime{Time: to},
-	}
-
-	err := c.Query(ctx, &query, v)
-	if err != nil {
-		return nil, err
-	}
-
-	var contributions []int
-
-	for _, w := range query.User.ContributionsCollection.ContributionCalendar.Weeks {
-		for _, d := range w.ContributionDays {
-			contributions = append(contributions, d.ContributionCount)
-		}
-	}
-
-	return contributions, nil
+	return err
 }
