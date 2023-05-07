@@ -1,4 +1,4 @@
-package application
+package status
 
 import (
 	"github.com/rdnt/rdnt/pkg/github"

@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/rdnt/rdnt/internal/application"
+	"github.com/rdnt/rdnt/internal/status"
 	"github.com/rdnt/rdnt/pkg/github"
 	authn "github.com/rdnt/rdnt/pkg/oauth"
 	"github.com/rdnt/rdnt/pkg/spotify"
@@ -125,9 +125,9 @@ func main() {
 		githubHttpClient,
 	)
 
-	app := application.New(
-		application.WithSpotifyClient(spotifyClient),
-		application.WithGithubClient(githubClient),
+	app := status.New(
+		status.WithSpotifyClient(spotifyClient),
+		status.WithGithubClient(githubClient),
 	)
 
 	err = app.Start()
