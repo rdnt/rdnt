@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 	"github.com/rdnt/rdnt/internal/status"
 	"github.com/rdnt/rdnt/pkg/github"
 	authn "github.com/rdnt/rdnt/pkg/oauth"
@@ -100,7 +101,7 @@ func main() {
 
 	go func() {
 		err := r.Run(fmt.Sprintf("%s:%d", host, port))
-		if err != nil {
+		if !errors.Is(err, http.ErrServerClosed) && err != nil {
 			log.Fatal(err)
 		}
 	}()

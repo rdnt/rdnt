@@ -74,7 +74,7 @@ func (app *Application) Start() error {
 
 				err := app.spotify.UpdateCurrentTrack()
 				if err != nil {
-					log.Fatal(err)
+					log.Print(err)
 				}
 			}()
 		}
