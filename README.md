@@ -1,6 +1,7 @@
-### Welcome to my GitHub profile! 👋
+### Hi! 👋
 
-Hi :D I'm thrilled you are here!  
+I'm thrilled you are here! 😃
+
 My name is Tasos, and I am a software engineer based in Greece. I love programming, designing software, as well as listening to music or tinkering with programs in varried, interesting ways. I also game a little, when time allows.
 
 Check out what I've been recently working on:
