@@ -7,7 +7,7 @@ My name is Tasos, and I am a software engineer based in Greece. I love programmi
 Check out what I've been recently working on:
 - [**ledctl**](https://github.com/rdnt/ledctl) - Wireless Ambient lighting controller written in Go
 - [**m8**](https://github.com/rdnt/m8) - A retro, pixelated watch face for WearOS
-- [**myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager (coming soon™!)
+<!-- - [**myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager (coming soon™!) -->
 
 ![Contributions](https://github.com/rdnt/rdnt/blob/assets/contributions-dark.svg?raw=true#gh-dark-mode-only)
 ![Contributions](https://github.com/rdnt/rdnt/blob/assets/contributions-light.svg?raw=true#gh-light-mode-only)
