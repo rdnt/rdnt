@@ -1,6 +1,6 @@
 ### Hi! 👋
 
-I'm thrilled you are here! 😃
+Glad you are here! 😃
 
 My name is Tasos, and I am a software engineer based in Greece. I love programming, designing software, as well as listening to music or tinkering with programs in varried, interesting ways. I also game a little, when time allows.
 
