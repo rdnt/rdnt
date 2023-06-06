@@ -1,8 +1,9 @@
 ### Hi! 👋
 
-Glad you are here! 😃
+Welcome to my GitHub profile! :octocat:
 
-My name is Tasos, and I am a software engineer based in Greece. I love programming, designing software, as well as listening to music or tinkering with programs in varried, interesting ways. I also game a little, when time allows.
+My name is Tasos, and I am a working student and software engineer based in Greece. I love programming, designing, gaming or tinkering with programs in varried, interesting ways.  
+I use GitHub to host my personal projects as well as for work-related stuff~
 
 Check out what I've been recently working on:
 - [**ledctl**](https://github.com/rdnt/ledctl) - Wireless Ambient lighting controller written in Go
