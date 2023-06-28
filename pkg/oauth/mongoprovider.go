@@ -25,7 +25,9 @@ func NewMongoTokenProvider(sm *secretsmanager.Manager, tokenId string) (*MongoTo
 
 func (m *MongoTokenProvider) Get() (*oauth2.Token, error) {
 	b, err := m.sm.Get(m.tokenId)
-	if err != nil {
+	if errors.Is(err, secretsmanager.ErrNotFound) {
+		return nil, ErrTokenNotSet
+	} else if err != nil {
 		return nil, errors.WithMessage(err, "failed to set oauth2 token")
 	}
 

@@ -12,6 +12,10 @@ func NewInMemoryTokenProvider() *InMemoryTokenProvider {
 }
 
 func (t *InMemoryTokenProvider) Get() (*oauth2.Token, error) {
+	if t.token == nil {
+		return nil, ErrTokenNotSet
+	}
+
 	return t.token, nil
 }
 

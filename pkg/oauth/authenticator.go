@@ -19,6 +19,8 @@ type Authn struct {
 	client   *http.Client
 }
 
+var ErrTokenNotSet = errors.New("token not set")
+
 type TokenProvider interface {
 	Get() (*oauth2.Token, error)
 	Set(*oauth2.Token) error
@@ -41,15 +43,15 @@ func NewAuthn(name string, cfg *oauth2.Config, prov TokenProvider) (*Authn, erro
 
 func (a *Authn) Client() (*http.Client, error) {
 	tok, err := a.provider.Get()
-	if err != nil {
+	if errors.Is(err, ErrTokenNotSet) {
+		go a.startOauthFlow()
+
+		tok = <-a.provider.Updated()
+		if tok == nil {
+			return nil, errors.New("token not set")
+		}
+	} else if err != nil {
 		return nil, err
-	}
-
-	go a.startOauthFlow()
-
-	tok = <-a.provider.Updated()
-	if tok == nil {
-		return nil, errors.New("token not set")
 	}
 
 	return a.createClient(tok)
