@@ -1,7 +1,7 @@
 module github.com/rdnt/rdnt
 
-// +heroku goVersion go1.20
-go 1.20
+// +heroku goVersion go1.18
+go 1.18
 
 require (
 	github.com/Khan/genqlient v0.6.0
