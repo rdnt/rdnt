@@ -2,22 +2,30 @@ package authn
 
 import (
 	"context"
-	"github.com/pkg/errors"
-	"github.com/rdnt/rdnt/pkg/rand"
-	"golang.org/x/oauth2"
 	"log"
 	"net/http"
+
+	"github.com/pkg/errors"
+	"golang.org/x/oauth2"
+
+	"github.com/rdnt/rdnt/pkg/rand"
 )
 
 type Authn struct {
 	name     string
 	conf     *oauth2.Config
 	state    string
-	provider *TokenProvider
+	provider TokenProvider
 	client   *http.Client
 }
 
-func NewAuthn(name string, cfg *oauth2.Config) (*Authn, error) {
+type TokenProvider interface {
+	Get() (*oauth2.Token, error)
+	Set(*oauth2.Token) error
+	Updated() chan *oauth2.Token
+}
+
+func NewAuthn(name string, cfg *oauth2.Config, prov TokenProvider) (*Authn, error) {
 	state, err := rand.String(32)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to generate state")
@@ -27,7 +35,7 @@ func NewAuthn(name string, cfg *oauth2.Config) (*Authn, error) {
 		name:     name,
 		conf:     cfg,
 		state:    state,
-		provider: NewTokenProvider(),
+		provider: prov,
 	}, nil
 }
 

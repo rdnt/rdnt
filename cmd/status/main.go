@@ -2,21 +2,24 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/pkg/errors"
-	"github.com/rdnt/rdnt/internal/status"
-	"github.com/rdnt/rdnt/pkg/github"
-	authn "github.com/rdnt/rdnt/pkg/oauth"
-	"github.com/rdnt/rdnt/pkg/spotify"
-	"golang.org/x/oauth2"
-	githubOauth "golang.org/x/oauth2/github"
-	spotifyOauth "golang.org/x/oauth2/spotify"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"strconv"
 	"syscall"
+
+	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
+	"golang.org/x/oauth2"
+	githubOauth "golang.org/x/oauth2/github"
+	spotifyOauth "golang.org/x/oauth2/spotify"
+
+	"github.com/rdnt/rdnt/internal/status"
+	"github.com/rdnt/rdnt/pkg/github"
+	authn "github.com/rdnt/rdnt/pkg/oauth"
+	"github.com/rdnt/rdnt/pkg/secretsmanager"
+	"github.com/rdnt/rdnt/pkg/spotify"
 )
 
 func main() {
@@ -60,12 +63,30 @@ func main() {
 		RedirectURL:  githubRedirectUrl,
 	}
 
-	spotifyAuthn, err := authn.NewAuthn("Spotify", spotifyConf)
+	mongoAddress := os.Getenv("MONGO_ADDRESS")
+	mongoDatabase := os.Getenv("MONGO_DATABASE")
+
+	sm, err := secretsmanager.New(mongoAddress, mongoDatabase)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	githubAuthn, err := authn.NewAuthn("GitHub", githubConf)
+	spotifyTokenProv, err := authn.NewMongoTokenProvider(sm, "spotify")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	spotifyAuthn, err := authn.NewAuthn("Spotify", spotifyConf, spotifyTokenProv)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	githubTokenProv, err := authn.NewMongoTokenProvider(sm, "github")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	githubAuthn, err := authn.NewAuthn("GitHub", githubConf, githubTokenProv)
 	if err != nil {
 		log.Fatal(err)
 	}
