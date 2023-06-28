@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"fmt"
 	"log"
 	"net/http"
@@ -65,8 +66,14 @@ func main() {
 
 	mongoAddress := os.Getenv("MONGO_ADDRESS")
 	mongoDatabase := os.Getenv("MONGO_DATABASE")
+	encKeyBase64 := os.Getenv("SECRETS_ENCRYPTION_KEY")
 
-	sm, err := secretsmanager.New(mongoAddress, mongoDatabase)
+	encKey, err := base64.StdEncoding.DecodeString(encKeyBase64)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	sm, err := secretsmanager.New(mongoAddress, mongoDatabase, encKey)
 	if err != nil {
 		log.Fatal(err)
 	}

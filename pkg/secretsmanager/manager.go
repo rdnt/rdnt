@@ -11,9 +11,10 @@ import (
 type Manager struct {
 	mdb      *mongo.Client
 	database string
+	encKey   []byte
 }
 
-func New(addr string, database string) (*Manager, error) {
+func New(addr, database string, encKey []byte) (*Manager, error) {
 	ctx := context.Background()
 
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(addr))
@@ -24,5 +25,6 @@ func New(addr string, database string) (*Manager, error) {
 	return &Manager{
 		mdb:      client,
 		database: database,
+		encKey:   encKey,
 	}, nil
 }

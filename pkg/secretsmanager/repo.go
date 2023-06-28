@@ -7,6 +7,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+
+	"github.com/rdnt/rdnt/pkg/crypto"
 )
 
 type Secret struct {
@@ -20,9 +22,14 @@ func (m *Manager) Set(name string, secret []byte) error {
 	collection := m.mdb.Database(m.database).Collection("secrets")
 	ctx := context.Background()
 
+	secret, err := crypto.Aes256CbcEncrypt(secret, m.encKey)
+	if err != nil {
+		return errors.WithMessage(err, "failed to encrypt secret")
+	}
+
 	bs := Secret{Name: name, EncryptedSecret: secret}
 
-	_, err := collection.InsertOne(ctx, bs)
+	_, err = collection.InsertOne(ctx, bs)
 	if err != nil {
 		return errors.Wrap(err, "failed to set secret")
 	}
@@ -48,5 +55,10 @@ func (m *Manager) Get(name string) ([]byte, error) {
 		return nil, errors.Wrap(err, "failed to decode invitation")
 	}
 
-	return bs.EncryptedSecret, nil
+	secret, err := crypto.Aes256CbcDecrypt(bs.EncryptedSecret, m.encKey)
+	if err != nil {
+		return nil, errors.WithMessage(err, "failed to encrypt secret")
+	}
+
+	return secret, nil
 }
