@@ -61,17 +61,17 @@ func (m *Manager) Get(name string) ([]byte, error) {
 		return nil, errors.Wrap(err, "failed to decode invitation")
 	}
 
-	b, err := crypto.Aes256CbcDecrypt(bs.EncryptedSecret, m.encKey)
-	if err != nil {
-		return nil, errors.WithMessage(err, "failed to encrypt secret")
-	}
-
-	mac := b[:sha256.Size]
-	b = b[sha256.Size:]
+	mac := bs.EncryptedSecret[:sha256.Size]
+	b := bs.EncryptedSecret[sha256.Size:]
 
 	valid := crypto.VerifyHmacSha256(m.signKey, mac, b)
 	if !valid {
 		return nil, errors.WithMessage(err, "integrity check failed")
+	}
+
+	b, err = crypto.Aes256CbcDecrypt(b, m.encKey)
+	if err != nil {
+		return nil, errors.WithMessage(err, "failed to encrypt secret")
 	}
 
 	return b, nil
