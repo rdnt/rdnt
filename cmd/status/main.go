@@ -106,7 +106,6 @@ func main() {
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
-	r.Use(gin.Logger())
 
 	err = r.SetTrustedProxies(nil)
 	if err != nil {
