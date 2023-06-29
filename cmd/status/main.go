@@ -119,7 +119,7 @@ func main() {
 	r.GET("/oauth/spotify/callback", func(c *gin.Context) {
 		err := spotifyAuthn.ExtractToken(c.Request)
 		if err != nil {
-			log.Println(err)
+			log.Println("spotify", err)
 			return
 		}
 
@@ -130,7 +130,7 @@ func main() {
 	r.GET("/oauth/github/callback", func(c *gin.Context) {
 		err := githubAuthn.ExtractToken(c.Request)
 		if err != nil {
-			log.Println(err)
+			log.Println("github", err)
 			return
 		}
 
