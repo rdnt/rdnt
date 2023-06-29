@@ -67,13 +67,19 @@ func main() {
 	mongoAddress := os.Getenv("MONGO_ADDRESS")
 	mongoDatabase := os.Getenv("MONGO_DATABASE")
 	encKeyBase64 := os.Getenv("SECRETS_ENCRYPTION_KEY")
+	signingKeyBase64 := os.Getenv("SECRETS_SIGNING_KEY")
 
-	encKey, err := base64.StdEncoding.DecodeString(encKeyBase64)
+	encryptionKey, err := base64.StdEncoding.DecodeString(encKeyBase64)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	sm, err := secretsmanager.New(mongoAddress, mongoDatabase, encKey)
+	signingKey, err := base64.StdEncoding.DecodeString(signingKeyBase64)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	sm, err := secretsmanager.New(mongoAddress, mongoDatabase, encryptionKey, signingKey)
 	if err != nil {
 		log.Fatal(err)
 	}

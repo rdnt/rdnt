@@ -12,9 +12,10 @@ type Manager struct {
 	mdb      *mongo.Client
 	database string
 	encKey   []byte
+	signKey  []byte
 }
 
-func New(addr, database string, encKey []byte) (*Manager, error) {
+func New(addr, database string, encryptionKey, signingKey []byte) (*Manager, error) {
 	ctx := context.Background()
 
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(addr))
@@ -25,6 +26,7 @@ func New(addr, database string, encKey []byte) (*Manager, error) {
 	return &Manager{
 		mdb:      client,
 		database: database,
-		encKey:   encKey,
+		encKey:   encryptionKey,
+		signKey:  signingKey,
 	}, nil
 }

@@ -2,6 +2,7 @@ package secretsmanager
 
 import (
 	"context"
+	"crypto/sha256"
 
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
@@ -22,12 +23,17 @@ func (m *Manager) Set(name string, secret []byte) error {
 	collection := m.mdb.Database(m.database).Collection("secrets")
 	ctx := context.Background()
 
-	secret, err := crypto.Aes256CbcEncrypt(secret, m.encKey)
+	b, err := crypto.Aes256CbcEncrypt(secret, m.encKey)
 	if err != nil {
 		return errors.WithMessage(err, "failed to encrypt secret")
 	}
 
-	bs := Secret{Name: name, EncryptedSecret: secret}
+	mac := crypto.HmacSha256(m.signKey, secret)
+
+	// prepend mac to the ciphertext
+	b = append(mac, b...)
+
+	bs := Secret{Name: name, EncryptedSecret: b}
 
 	_, err = collection.InsertOne(ctx, bs)
 	if err != nil {
@@ -55,10 +61,18 @@ func (m *Manager) Get(name string) ([]byte, error) {
 		return nil, errors.Wrap(err, "failed to decode invitation")
 	}
 
-	secret, err := crypto.Aes256CbcDecrypt(bs.EncryptedSecret, m.encKey)
+	b, err := crypto.Aes256CbcDecrypt(bs.EncryptedSecret, m.encKey)
 	if err != nil {
 		return nil, errors.WithMessage(err, "failed to encrypt secret")
 	}
 
-	return secret, nil
+	mac := b[0:sha256.Size]
+	b = b[sha256.Size:]
+
+	valid := crypto.VerifyHmacSha256(m.signKey, mac, b)
+	if !valid {
+		return nil, errors.WithMessage(err, "integrity check failed")
+	}
+
+	return b, nil
 }
