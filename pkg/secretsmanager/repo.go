@@ -28,7 +28,7 @@ func (m *Manager) Set(name string, secret []byte) error {
 		return errors.WithMessage(err, "failed to encrypt secret")
 	}
 
-	mac := crypto.HmacSha256(m.signKey, secret)
+	mac := crypto.HmacSha256(m.signKey, b)
 
 	// prepend mac to the ciphertext
 	b = append(mac, b...)
@@ -66,7 +66,7 @@ func (m *Manager) Get(name string) ([]byte, error) {
 		return nil, errors.WithMessage(err, "failed to encrypt secret")
 	}
 
-	mac := b[0:sha256.Size]
+	mac := b[:sha256.Size]
 	b = b[sha256.Size:]
 
 	valid := crypto.VerifyHmacSha256(m.signKey, mac, b)
