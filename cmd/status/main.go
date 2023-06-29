@@ -107,6 +107,11 @@ func main() {
 	gin.SetMode(gin.DebugMode)
 	r := gin.New()
 
+	err = r.SetTrustedProxies(nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	r.GET("/health", func(c *gin.Context) {
 		c.Status(http.StatusOK)
 	})
