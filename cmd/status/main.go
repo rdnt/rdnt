@@ -104,7 +104,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	gin.SetMode(gin.ReleaseMode)
+	gin.SetMode(gin.DebugMode)
 	r := gin.New()
 
 	r.GET("/health", func(c *gin.Context) {
