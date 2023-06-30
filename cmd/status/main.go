@@ -125,7 +125,9 @@ func main() {
 
 	oauth.GET("/spotify/callback", func(c *gin.Context) {
 		err := spotifyAuthn.ExtractToken(c.Request)
-		if !errors.Is(err, authn.ErrExchanged) && err != nil {
+		if errors.Is(err, authn.ErrExchanged) {
+			return
+		} else if err != nil {
 			log.Println("spotify", err)
 			return
 		}
@@ -136,7 +138,9 @@ func main() {
 
 	oauth.GET("/github/callback", func(c *gin.Context) {
 		err := githubAuthn.ExtractToken(c.Request)
-		if !errors.Is(err, authn.ErrExchanged) && err != nil {
+		if errors.Is(err, authn.ErrExchanged) {
+			return
+		} else if err != nil {
 			log.Println("github", err)
 			return
 		}
