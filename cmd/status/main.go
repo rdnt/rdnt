@@ -23,6 +23,10 @@ import (
 	"github.com/rdnt/rdnt/pkg/spotify"
 )
 
+func init() {
+	os.Setenv("TZ", "UTC")
+}
+
 func main() {
 	host := os.Getenv("SERVER_HOST")
 	strPort := os.Getenv("SERVER_PORT")
@@ -116,9 +120,12 @@ func main() {
 		c.Status(http.StatusOK)
 	})
 
-	r.GET("/oauth/spotify/callback", func(c *gin.Context) {
+	oauth := r.Group("/oauth")
+	oauth.Use(gin.Logger())
+
+	oauth.GET("/spotify/callback", func(c *gin.Context) {
 		err := spotifyAuthn.ExtractToken(c.Request)
-		if err != nil {
+		if !errors.Is(err, authn.ErrExchanged) && err != nil {
 			log.Println("spotify", err)
 			return
 		}
@@ -127,9 +134,9 @@ func main() {
 		log.Print("Spotify client authenticated successfully.")
 	})
 
-	r.GET("/oauth/github/callback", func(c *gin.Context) {
+	oauth.GET("/github/callback", func(c *gin.Context) {
 		err := githubAuthn.ExtractToken(c.Request)
-		if err != nil {
+		if !errors.Is(err, authn.ErrExchanged) && err != nil {
 			log.Println("github", err)
 			return
 		}

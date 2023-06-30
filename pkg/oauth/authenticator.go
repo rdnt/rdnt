@@ -2,8 +2,10 @@ package authn
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
+	"sync"
 
 	"github.com/pkg/errors"
 	"golang.org/x/oauth2"
@@ -12,14 +14,17 @@ import (
 )
 
 type Authn struct {
-	name     string
-	conf     *oauth2.Config
-	state    string
-	provider TokenProvider
-	client   *http.Client
+	name         string
+	conf         *oauth2.Config
+	state        string
+	provider     TokenProvider
+	client       *http.Client
+	exchanged    bool
+	exchangedMux sync.Mutex
 }
 
 var ErrTokenNotSet = errors.New("token not set")
+var ErrExchanged = errors.New("token already exchanged")
 
 type TokenProvider interface {
 	Get() (*oauth2.Token, error)
@@ -74,6 +79,15 @@ func (a *Authn) oauthUrl() string {
 }
 
 func (a *Authn) ExtractToken(req *http.Request) error {
+	a.exchangedMux.Lock()
+	if a.exchanged {
+		a.exchangedMux.Unlock()
+		return ErrExchanged
+	}
+
+	a.exchanged = true
+	a.exchangedMux.Unlock()
+
 	values := req.URL.Query()
 	if e := values.Get("error"); e != "" {
 		return errors.New("auth failed")
@@ -89,7 +103,9 @@ func (a *Authn) ExtractToken(req *http.Request) error {
 		return errors.New("invalid state")
 	}
 
-	tok, err := a.conf.Exchange(req.Context(), code)
+	fmt.Println("EXCHANGE", code)
+
+	tok, err := a.conf.Exchange(context.Background(), code)
 	if err != nil {
 		return errors.Wrap(err, "token exchange failed")
 	}
