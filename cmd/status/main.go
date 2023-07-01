@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"strconv"
+	"strings"
 	"syscall"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +17,7 @@ import (
 	githubOauth "golang.org/x/oauth2/github"
 	spotifyOauth "golang.org/x/oauth2/spotify"
 
-	"github.com/rdnt/rdnt/internal/status"
+	"github.com/rdnt/rdnt/internal/presence"
 	"github.com/rdnt/rdnt/pkg/github"
 	authn "github.com/rdnt/rdnt/pkg/oauth"
 	"github.com/rdnt/rdnt/pkg/secretsmanager"
@@ -176,9 +177,12 @@ func main() {
 		githubHttpClient,
 	)
 
-	app := status.New(
-		status.WithSpotifyClient(spotifyClient),
-		status.WithGithubClient(githubClient),
+	emojis := strings.Split(os.Getenv("GITHUB_STATUS_EMOJIS"), ",")
+
+	app := presence.New(
+		presence.WithSpotifyClient(spotifyClient),
+		presence.WithGithubClient(githubClient),
+		presence.WithEmojis(emojis),
 	)
 
 	err = app.Start()

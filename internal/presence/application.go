@@ -1,15 +1,18 @@
-package status
+package presence
 
 import (
+	"log"
+	"math/rand"
+	"time"
+
 	"github.com/rdnt/rdnt/pkg/github"
 	"github.com/rdnt/rdnt/pkg/spotify"
-	"log"
-	"time"
 )
 
 type Application struct {
 	spotify *spotify.Client
 	github  *github.Client
+	emojis  []string
 }
 
 type Option func(app *Application)
@@ -23,6 +26,12 @@ func WithSpotifyClient(c *spotify.Client) Option {
 func WithGithubClient(c *github.Client) Option {
 	return func(app *Application) {
 		app.github = c
+	}
+}
+
+func WithEmojis(emojis []string) Option {
+	return func(app *Application) {
+		app.emojis = emojis
 	}
 }
 
@@ -49,8 +58,14 @@ func New(opts ...Option) *Application {
 
 		status := "Listening to " + track.Track + " - " + track.Artist
 
+		emoji := ":green_circle:"
+
+		if len(app.emojis) > 0 {
+			emoji = app.emojis[randInt(0, len(app.emojis)-1)]
+		}
+
 		err := app.github.ChangeUserStatus(
-			":green_circle:",
+			emoji,
 			time.Now().Add(120*time.Minute).UTC(), // listening to a 2-hour monstercat mix? plausible
 			status,
 			true,
@@ -64,6 +79,10 @@ func New(opts ...Option) *Application {
 	}
 
 	return app
+}
+
+func randInt(min, max int) int {
+	return rand.Intn(max-min) + min
 }
 
 func (app *Application) Start() error {

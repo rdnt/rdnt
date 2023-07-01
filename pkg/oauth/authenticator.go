@@ -2,7 +2,6 @@ package authn
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"sync"
@@ -102,8 +101,6 @@ func (a *Authn) ExtractToken(req *http.Request) error {
 	if actualState != a.state {
 		return errors.New("invalid state")
 	}
-
-	fmt.Println("EXCHANGE", code)
 
 	tok, err := a.conf.Exchange(context.Background(), code)
 	if err != nil {
