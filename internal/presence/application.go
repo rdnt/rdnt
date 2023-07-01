@@ -2,10 +2,10 @@ package presence
 
 import (
 	"log"
-	"math/rand"
 	"time"
 
 	"github.com/rdnt/rdnt/pkg/github"
+	"github.com/rdnt/rdnt/pkg/rand"
 	"github.com/rdnt/rdnt/pkg/spotify"
 )
 
@@ -61,7 +61,7 @@ func New(opts ...Option) *Application {
 		emoji := ":green_circle:"
 
 		if len(app.emojis) > 0 {
-			emoji = app.emojis[randInt(0, len(app.emojis)-1)]
+			emoji = app.emojis[rand.Int(0, len(app.emojis)-1)]
 		}
 
 		err := app.github.ChangeUserStatus(
@@ -79,10 +79,6 @@ func New(opts ...Option) *Application {
 	}
 
 	return app
-}
-
-func randInt(min, max int) int {
-	return rand.Intn((max+1)-min) + min
 }
 
 func (app *Application) Start() error {
