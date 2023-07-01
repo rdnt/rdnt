@@ -44,7 +44,7 @@ func New(opts ...Option) *Application {
 		}
 	}
 
-	app.spotify.Track.Subscribe(func(track *spotify.Track) {
+	app.spotify.Track().Subscribe(func(track *spotify.Track) {
 		if track == nil {
 			err := app.github.ChangeUserStatus("", time.Time{}, "", false)
 			if err != nil {

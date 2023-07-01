@@ -19,12 +19,10 @@ type Publisher[E any] interface {
 	Publish(e E)
 }
 
-func New[E any]() (Publisher[E], Subscriber[E]) {
-	b := &broker[E]{
+func New[E any]() Broker[E] {
+	return &broker[E]{
 		subs: map[string]func(E){},
 	}
-
-	return b, b
 }
 
 type broker[E any] struct {

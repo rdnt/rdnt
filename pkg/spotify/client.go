@@ -21,24 +21,23 @@ type Track struct {
 type TrackChangedHandler func(state *Track)
 
 type Client struct {
-	client *spotify.Client
-
+	client      *spotify.Client
 	track       *Track
-	Track       broker.Subscriber[*Track]
-	updateTrack broker.Publisher[*Track]
+	trackBroker broker.Broker[*Track]
 }
 
 func New(httpClient *http.Client) *Client {
-	pub, sub := broker.New[*Track]()
-
 	return &Client{
 		client: spotify.New(
 			httpClient,
 			spotify.WithRetry(true),
 		),
-		Track:       sub,
-		updateTrack: pub,
+		trackBroker: broker.New[*Track](),
 	}
+}
+
+func (c *Client) Track() broker.Subscriber[*Track] {
+	return broker.Subscriber[*Track](c.trackBroker)
 }
 
 func (c *Client) UpdateCurrentTrack() error {
@@ -53,11 +52,7 @@ func (c *Client) UpdateCurrentTrack() error {
 	}
 
 	c.track = track
-
-	c.updateTrack.Publish(c.track)
-	//if c.TrackChanged != nil {
-	//	c.TrackChanged(c.track)
-	//}
+	c.trackBroker.Publish(c.track)
 
 	return nil
 }
