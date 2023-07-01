@@ -2,11 +2,14 @@ package spotify
 
 import (
 	"context"
-	"github.com/pkg/errors"
-	"github.com/zmb3/spotify/v2"
 	"net/http"
 	"reflect"
 	"strings"
+
+	"github.com/pkg/errors"
+	"github.com/zmb3/spotify/v2"
+
+	"github.com/rdnt/rdnt/pkg/broker"
 )
 
 type Track struct {
@@ -20,16 +23,21 @@ type TrackChangedHandler func(state *Track)
 type Client struct {
 	client *spotify.Client
 
-	track        *Track
-	TrackChanged TrackChangedHandler
+	track       *Track
+	Track       broker.Subscriber[*Track]
+	updateTrack broker.Publisher[*Track]
 }
 
 func New(httpClient *http.Client) *Client {
+	pub, sub := broker.New[*Track]()
+
 	return &Client{
 		client: spotify.New(
 			httpClient,
 			spotify.WithRetry(true),
 		),
+		Track:       sub,
+		updateTrack: pub,
 	}
 }
 
@@ -46,9 +54,10 @@ func (c *Client) UpdateCurrentTrack() error {
 
 	c.track = track
 
-	if c.TrackChanged != nil {
-		c.TrackChanged(c.track)
-	}
+	c.updateTrack.Publish(c.track)
+	//if c.TrackChanged != nil {
+	//	c.TrackChanged(c.track)
+	//}
 
 	return nil
 }

@@ -9,6 +9,7 @@ require (
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/akrennmair/slice v0.0.0-20220105203817-49445747ab81
 	github.com/gin-gonic/gin v1.9.1
+	github.com/google/uuid v1.3.0
 	github.com/pkg/errors v0.9.1
 	github.com/shurcooL/githubv4 v0.0.0-20230424031643-6cea62ecd5a9
 	github.com/zmb3/spotify/v2 v2.3.1

@@ -44,7 +44,7 @@ func New(opts ...Option) *Application {
 		}
 	}
 
-	app.spotify.TrackChanged = func(track *spotify.Track) {
+	app.spotify.Track.Subscribe(func(track *spotify.Track) {
 		if track == nil {
 			err := app.github.ChangeUserStatus("", time.Time{}, "", false)
 			if err != nil {
@@ -66,7 +66,7 @@ func New(opts ...Option) *Application {
 
 		err := app.github.ChangeUserStatus(
 			emoji,
-			time.Now().Add(120*time.Minute).UTC(), // listening to a 2-hour monstercat mix? plausible
+			time.Now().UTC().Add(120*time.Minute), // listening to a 2-hour monstercat mix? plausible
 			status,
 			true,
 		)
@@ -76,7 +76,7 @@ func New(opts ...Option) *Application {
 		}
 
 		log.Printf("Status updated to: \"%s\".", status)
-	}
+	})
 
 	return app
 }
