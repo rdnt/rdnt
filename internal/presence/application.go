@@ -82,7 +82,7 @@ func New(opts ...Option) *Application {
 }
 
 func randInt(min, max int) int {
-	return rand.Intn(max-min) + min
+	return rand.Intn((max+1)-min) + min
 }
 
 func (app *Application) Start() error {
