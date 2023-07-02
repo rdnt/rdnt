@@ -24,10 +24,6 @@ import (
 	"github.com/rdnt/rdnt/pkg/spotify"
 )
 
-func init() {
-	os.Setenv("TZ", "UTC")
-}
-
 func main() {
 	host := os.Getenv("SERVER_HOST")
 	strPort := os.Getenv("SERVER_PORT")
