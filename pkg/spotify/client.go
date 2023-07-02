@@ -36,8 +36,8 @@ func New(httpClient *http.Client) *Client {
 	}
 }
 
-func (c *Client) Track() broker.Subscriber[*Track] {
-	return broker.Subscriber[*Track](c.trackBroker)
+func (c *Client) OnTrackChanged(h func(e *Track)) (dispose func()) {
+	return c.trackBroker.Subscribe(h)
 }
 
 func (c *Client) UpdateCurrentTrack() error {
