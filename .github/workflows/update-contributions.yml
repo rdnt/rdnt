@@ -1,0 +1,32 @@
+name: Update contributions graph
+on:
+  workflow_dispatch:
+  schedule:
+    # Runs every hour
+    - cron: "13 * * * *"
+jobs:
+  update:
+    name: Update contributions graph
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+      - name: Generate graph
+        env:
+          USERNAME: ${{ secrets.USERNAME }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        run: go run main.go
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
+        with:
+          branch: assets
+          folder: assets
+          # investigate: for some reason it doesn't update if the files keep their name
+          single-commit: true
+          commit-message: Update contributions graph
+          git-config-name: github-actions[bot]
+          git-config-email: github-actions[bot]@users.noreply.github.com
