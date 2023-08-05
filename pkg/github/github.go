@@ -2,14 +2,11 @@ package github
 
 import (
 	"context"
-	"github.com/Khan/genqlient/graphql"
 	"net/http"
 	"time"
-)
 
-// imports needed for genqlient
-import (
 	_ "github.com/Khan/genqlient/generate"
+	"github.com/Khan/genqlient/graphql"
 	_ "github.com/agnivade/levenshtein"
 )
 
@@ -28,8 +25,9 @@ func New(apiURL string, httpClient *http.Client) *Client {
 	}
 }
 
-func (c *Client) ChangeUserStatus(emoji string, expiresAt time.Time, message string, limited bool) error {
-	_, err := changeUserStatus(context.Background(), c.gql, ChangeUserStatusInput{
+func (c *Client) ChangeUserStatus(ctx context.Context,
+	emoji string, expiresAt time.Time, message string, limited bool) error {
+	_, err := changeUserStatus(ctx, c.gql, ChangeUserStatusInput{
 		ClientMutationId:    &c.clientId,
 		Emoji:               &emoji,
 		ExpiresAt:           &expiresAt,
@@ -39,4 +37,23 @@ func (c *Client) ChangeUserStatus(emoji string, expiresAt time.Time, message str
 	})
 
 	return err
+}
+
+func (c *Client) ContributionsView(ctx context.Context,
+	username string, from, to time.Time,
+) ([]int, error) {
+	resp, err := contributionsView(ctx, c.gql, username, from, to)
+	if err != nil {
+		return nil, err
+	}
+
+	var contributions []int
+
+	for _, w := range resp.User.ContributionsCollection.ContributionCalendar.Weeks {
+		for _, d := range w.ContributionDays {
+			contributions = append(contributions, d.ContributionCount)
+		}
+	}
+
+	return contributions, nil
 }
