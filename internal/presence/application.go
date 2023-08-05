@@ -68,7 +68,7 @@ func New(opts ...Option) *Application {
 			emoji,
 			time.Now().UTC().Add(120*time.Minute), // listening to a 2-hour monstercat mix? plausible
 			status,
-			true,
+			false,
 		)
 		if err != nil {
 			log.Print(err)
