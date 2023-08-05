@@ -175,13 +175,13 @@ func main() {
 
 	emojis := strings.Split(os.Getenv("GITHUB_STATUS_EMOJIS"), ",")
 
-	app := presence.New(
-		presence.WithSpotifyClient(spotifyClient),
-		presence.WithGithubClient(githubClient),
-		presence.WithEmojis(emojis),
-	)
+	p := presence.New(presence.Options{
+		Spotify: spotifyClient,
+		GitHub:  githubClient,
+		Emojis:  emojis,
+	})
 
-	err = app.Start()
+	err = p.Run()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -190,4 +190,6 @@ func main() {
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 
 	<-c
+
+	p.Stop()
 }

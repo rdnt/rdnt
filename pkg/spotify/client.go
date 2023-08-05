@@ -36,8 +36,8 @@ func New(httpClient *http.Client) *Client {
 	}
 }
 
-func (c *Client) OnTrackChanged(h func(e *Track)) (dispose func()) {
-	return c.trackBroker.Subscribe(h)
+func (c *Client) Track() (track <-chan *Track, dispose func()) {
+	return c.trackBroker.Subscribe()
 }
 
 func (c *Client) UpdateCurrentTrack() error {

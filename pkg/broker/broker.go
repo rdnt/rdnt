@@ -12,7 +12,7 @@ type Broker[E any] interface {
 }
 
 type Subscriber[E any] interface {
-	Subscribe(handler func(e E)) (dispose func())
+	Subscribe() (events <-chan E, dispose func())
 }
 
 type Publisher[E any] interface {
@@ -21,42 +21,42 @@ type Publisher[E any] interface {
 
 func New[E any]() Broker[E] {
 	return &broker[E]{
-		subs: map[string]func(E){},
+		subs: make(map[string]chan E),
 	}
 }
 
 type broker[E any] struct {
-	lock sync.Mutex
-	subs map[string]func(E)
+	mux  sync.Mutex
+	subs map[string]chan E
 }
 
-func (o *broker[E]) Subscribe(h func(e E)) (dispose func()) {
+func (o *broker[E]) Subscribe() (events <-chan E, dispose func()) {
 	id := uuid.NewString()
+	c := make(chan E)
 
-	o.lock.Lock()
-	defer o.lock.Unlock()
+	o.mux.Lock()
+	defer o.mux.Unlock()
 
-	o.subs[id] = h
+	o.subs[id] = c
 
-	return func() {
-		o.dispose(id)
-	}
-}
+	return c, func() {
+		o.mux.Lock()
+		defer o.mux.Unlock()
 
-func (o *broker[E]) Publish(e E) {
-	o.lock.Lock()
-	defer o.lock.Unlock()
-
-	for _, h := range o.subs {
-		if h != nil {
-			h(e)
+		if c, ok := o.subs[id]; ok {
+			close(c)
+			delete(o.subs, id)
 		}
 	}
 }
 
-func (o *broker[E]) dispose(id string) {
-	o.lock.Lock()
-	defer o.lock.Unlock()
+func (o *broker[E]) Publish(e E) {
+	o.mux.Lock()
+	defer o.mux.Unlock()
 
-	delete(o.subs, id)
+	for _, c := range o.subs {
+		go func(c chan E) {
+			c <- e
+		}(c)
+	}
 }
