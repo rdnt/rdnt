@@ -17,7 +17,7 @@ type ChangeUserStatusInput struct {
 	Emoji *string `json:"emoji"`
 	// If set, the user status will not be shown after this date.
 	ExpiresAt *time.Time `json:"expiresAt"`
-	// Whether this status should indicate you are not fully available on GitHub, e.g., you are away.
+	// Whether this status should indicate you are not fully available on GraphqlClient, e.g., you are away.
 	LimitedAvailability *bool `json:"limitedAvailability"`
 	// A short description of your current status.
 	Message *string `json:"message"`
@@ -97,7 +97,7 @@ func (v *changeUserStatusChangeUserStatusChangeUserStatusPayloadStatusUserStatus
 
 // changeUserStatusResponse is returned by changeUserStatus on success.
 type changeUserStatusResponse struct {
-	// Update your status on GitHub.
+	// Update your status on GraphqlClient.
 	ChangeUserStatus *changeUserStatusChangeUserStatusChangeUserStatusPayload `json:"changeUserStatus"`
 }
 
@@ -118,7 +118,7 @@ func (v *contributionsViewResponse) GetUser() *contributionsViewUser { return v.
 // contributionsViewUser includes the requested fields of the GraphQL type User.
 // The GraphQL type's documentation follows.
 //
-// A user is an individual's account on GitHub that owns repositories and can make new content.
+// A user is an individual's account on GraphqlClient that owns repositories and can make new content.
 type contributionsViewUser struct {
 	// The collection of contributions this user has made to different repositories.
 	ContributionsCollection contributionsViewUserContributionsCollection `json:"contributionsCollection"`
@@ -134,7 +134,7 @@ func (v *contributionsViewUser) GetContributionsCollection() contributionsViewUs
 //
 // A contributions collection aggregates contributions such as opened issues and commits created by a user.
 type contributionsViewUserContributionsCollection struct {
-	// A calendar of this user's contributions on GitHub.
+	// A calendar of this user's contributions on GraphqlClient.
 	ContributionCalendar contributionsViewUserContributionsCollectionContributionCalendar `json:"contributionCalendar"`
 }
 
@@ -146,7 +146,7 @@ func (v *contributionsViewUserContributionsCollection) GetContributionCalendar()
 // contributionsViewUserContributionsCollectionContributionCalendar includes the requested fields of the GraphQL type ContributionCalendar.
 // The GraphQL type's documentation follows.
 //
-// A calendar of contributions made on GitHub by a user.
+// A calendar of contributions made on GraphqlClient by a user.
 type contributionsViewUserContributionsCollectionContributionCalendar struct {
 	// A list of the weeks of contributions in this calendar.
 	Weeks []contributionsViewUserContributionsCollectionContributionCalendarWeeksContributionCalendarWeek `json:"weeks"`
@@ -174,7 +174,7 @@ func (v *contributionsViewUserContributionsCollectionContributionCalendarWeeksCo
 // contributionsViewUserContributionsCollectionContributionCalendarWeeksContributionCalendarWeekContributionDaysContributionCalendarDay includes the requested fields of the GraphQL type ContributionCalendarDay.
 // The GraphQL type's documentation follows.
 //
-// Represents a single day of contributions on GitHub by a user.
+// Represents a single day of contributions on GraphqlClient by a user.
 type contributionsViewUserContributionsCollectionContributionCalendarWeeksContributionCalendarWeekContributionDaysContributionCalendarDay struct {
 	// How many contributions were made by the user on this day.
 	ContributionCount int `json:"contributionCount"`

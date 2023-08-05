@@ -9,12 +9,14 @@ require (
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/akrennmair/slice v0.0.0-20220105203817-49445747ab81
 	github.com/gin-gonic/gin v1.9.1
+	github.com/go-git/go-git/v5 v5.8.1
 	github.com/google/uuid v1.3.0
 	github.com/pkg/errors v0.9.1
 	github.com/shurcooL/githubv4 v0.0.0-20230424031643-6cea62ecd5a9
 	github.com/zmb3/spotify/v2 v2.3.1
 	go.mongodb.org/mongo-driver v1.12.0
 	golang.org/x/oauth2 v0.9.0
+	gotest.tools/v3 v3.5.0
 )
 
 require (
@@ -32,7 +34,6 @@ require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-git/go-billy/v5 v5.4.1 // indirect
-	github.com/go-git/go-git/v5 v5.8.1 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.14.1 // indirect

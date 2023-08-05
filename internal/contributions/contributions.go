@@ -4,30 +4,47 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"time"
 
+	"github.com/go-git/go-billy/v5/osfs"
+	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/config"
+	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/go-git/go-git/v5/plumbing/object"
+	githttp "github.com/go-git/go-git/v5/plumbing/transport/http"
+	"github.com/go-git/go-git/v5/storage/memory"
+	"github.com/pkg/errors"
+
 	"github.com/rdnt/rdnt/pkg/github"
 	"github.com/rdnt/rdnt/pkg/graph"
+	authn "github.com/rdnt/rdnt/pkg/oauth"
 )
 
 type Contributions struct {
-	github   *github.Client
-	username string
+	graphqlClient *github.Client
+	httpClient    *http.Client
+	username      string
 
 	cancel context.CancelFunc
 	done   chan bool
+	authn  *authn.Authn
 }
 
 type Options struct {
-	GitHub   *github.Client
-	Username string
+	GraphqlClient *github.Client
+	HttpClient    *http.Client
+	Username      string
+	TokenProvider *authn.Authn
 }
 
 func New(opts Options) *Contributions {
 	c := &Contributions{
-		github:   opts.GitHub,
-		username: opts.Username,
+		graphqlClient: opts.GraphqlClient,
+		username:      opts.Username,
+		httpClient:    opts.HttpClient,
+		authn:         opts.TokenProvider,
 	}
 
 	return c
@@ -68,7 +85,7 @@ func (c *Contributions) githubUpdateLoop(ctx context.Context) {
 		case <-ctx.Done():
 			return
 		case <-ticker.C:
-			fmt.Println("Querying GitHub...")
+			fmt.Println("Querying GraphqlClient...")
 			err := c.generateContributionsGraph(ctx)
 			if err != nil {
 				log.Println(err)
@@ -82,7 +99,7 @@ func (c *Contributions) generateContributionsGraph(ctx context.Context) error {
 	from := time.Now().UTC().AddDate(-1, 0, -7)
 	to := time.Now().UTC()
 
-	contribs, err := c.github.ContributionsView(ctx, c.username, from, to)
+	contribs, err := c.graphqlClient.ContributionsView(ctx, c.username, from, to)
 	if err != nil {
 		return err
 	}
@@ -117,6 +134,84 @@ func (c *Contributions) generateContributionsGraph(ctx context.Context) error {
 
 	err = g.Render(fl, graph.Light)
 	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c *Contributions) commitAndPush(ctx context.Context) error {
+	fs := osfs.New(".")
+
+	//f, err := fs.Create("contributions-dark.svg")
+	//if err != nil {
+	//	return err
+	//}
+	//
+	//_, err = f.Write([]byte("Hello World"))
+	//if err != nil {
+	//	return err
+	//}
+	//
+	//f.Close()
+
+	r, err := git.Init(memory.NewStorage(), fs)
+	if err != nil {
+		return err
+	}
+
+	rem, err := r.CreateRemote(&config.RemoteConfig{
+		Name: "origin",
+		URLs: []string{"https://github.com/rdnt/rdnt-test"},
+	})
+	if err != nil {
+		return err
+	}
+
+	wt, err := r.Worktree()
+	if err != nil {
+		return err
+	}
+
+	_, err = wt.Add("contributions-dark.svg")
+	if err != nil {
+		return err
+	}
+
+	_, err = wt.Commit("Update contributions graph", &git.CommitOptions{
+		Author: &object.Signature{
+			Name:  "github-actions[bot]",
+			Email: "github-actions[bot]@users.noreply.github.com",
+		},
+	})
+	if err != nil {
+		return err
+	}
+
+	err = wt.Checkout(&git.CheckoutOptions{
+		Branch: plumbing.NewBranchReferenceName("assets"),
+		Create: true,
+	})
+	if err != nil {
+		return err
+	}
+
+	tok, err := c.authn.Token()
+	if err != nil {
+		return err
+	}
+
+	err = rem.PushContext(ctx, &git.PushOptions{
+		RemoteName: "origin",
+		Force:      true,
+		Auth: &githttp.BasicAuth{
+			Username: "rdnt",
+			Password: tok.AccessToken,
+		},
+	})
+	if errors.Is(err, git.NoErrAlreadyUpToDate) {
+		return nil
+	} else if err != nil {
 		return err
 	}
 

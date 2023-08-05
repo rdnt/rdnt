@@ -1,4 +1,4 @@
-// Package githubold contains useful utilities for interacting with the GitHub API.
+// Package githubold contains useful utilities for interacting with the GraphqlClient API.
 package githubold
 
 import (

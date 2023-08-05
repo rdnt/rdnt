@@ -100,7 +100,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	githubAuthn, err := authn.NewAuthn("GitHub", githubConf, githubTokenProv)
+	githubAuthn, err := authn.NewAuthn("GraphqlClient", githubConf, githubTokenProv)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -142,8 +142,8 @@ func main() {
 			return
 		}
 
-		c.String(http.StatusOK, "GitHub successfully authenticated. You may close this window.")
-		log.Print("GitHub client authenticated successfully.")
+		c.String(http.StatusOK, "GraphqlClient successfully authenticated. You may close this window.")
+		log.Print("GraphqlClient client authenticated successfully.")
 	})
 
 	go func() {
