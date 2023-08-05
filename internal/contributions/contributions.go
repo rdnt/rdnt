@@ -91,6 +91,12 @@ func (c *Contributions) githubUpdateLoop(ctx context.Context) {
 				log.Println(err)
 				continue
 			}
+
+			err = c.commitAndPush(ctx)
+			if err != nil {
+				log.Println(err)
+				continue
+			}
 		}
 	}
 }
@@ -141,7 +147,7 @@ func (c *Contributions) generateContributionsGraph(ctx context.Context) error {
 }
 
 func (c *Contributions) commitAndPush(ctx context.Context) error {
-	fs := osfs.New(".")
+	fs := osfs.New("./test")
 
 	//f, err := fs.Create("contributions-dark.svg")
 	//if err != nil {
@@ -173,7 +179,7 @@ func (c *Contributions) commitAndPush(ctx context.Context) error {
 		return err
 	}
 
-	_, err = wt.Add("contributions-dark.svg")
+	_, err = wt.Add("assets")
 	if err != nil {
 		return err
 	}
@@ -182,6 +188,7 @@ func (c *Contributions) commitAndPush(ctx context.Context) error {
 		Author: &object.Signature{
 			Name:  "github-actions[bot]",
 			Email: "github-actions[bot]@users.noreply.github.com",
+			When:  time.Now(),
 		},
 	})
 	if err != nil {
@@ -202,6 +209,7 @@ func (c *Contributions) commitAndPush(ctx context.Context) error {
 	}
 
 	err = rem.PushContext(ctx, &git.PushOptions{
+		RefSpecs:   []config.RefSpec{"+refs/heads/assets:refs/heads/assets"},
 		RemoteName: "origin",
 		Force:      true,
 		Auth: &githttp.BasicAuth{
@@ -210,10 +218,13 @@ func (c *Contributions) commitAndPush(ctx context.Context) error {
 		},
 	})
 	if errors.Is(err, git.NoErrAlreadyUpToDate) {
+		fmt.Println("Nothing to commit.")
 		return nil
 	} else if err != nil {
 		return err
 	}
+
+	fmt.Println("Updated.")
 
 	return nil
 }
