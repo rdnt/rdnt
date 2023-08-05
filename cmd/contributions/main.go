@@ -129,7 +129,7 @@ func main() {
 
 	p := contributions.New(contributions.Options{
 		GraphqlClient: githubClient,
-		TokenProvider: githubTokenProv,
+		TokenProvider: githubAuthn,
 		Username:      username,
 	})
 
