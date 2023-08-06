@@ -19,7 +19,7 @@ jobs:
         env:
           USERNAME: ${{ secrets.USERNAME }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        run: go run main.go
+        run: go run ./cmd/contributions
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
