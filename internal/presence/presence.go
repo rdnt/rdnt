@@ -14,8 +14,9 @@ type Presence struct {
 	spotify *spotify.Client
 	github  *github.Client
 	emojis  []string
-	cancel  context.CancelFunc
-	done    chan bool
+
+	cancel context.CancelFunc
+	done   chan bool
 }
 
 type Options struct {
@@ -25,13 +26,37 @@ type Options struct {
 }
 
 func New(opts Options) *Presence {
-	app := &Presence{
+	p := &Presence{
 		spotify: opts.Spotify,
 		github:  opts.GitHub,
 		emojis:  opts.Emojis,
 	}
 
-	return app
+	return p
+}
+
+func (p *Presence) Run() error {
+	ctx, cancel := context.WithCancel(context.Background())
+	p.cancel = cancel
+	p.done = make(chan bool)
+
+	go p.githubUpdateLoop(ctx)
+	go p.spotifyPollLoop(ctx)
+
+	log.Print("Presence started.")
+
+	return nil
+}
+
+func (p *Presence) Stop() {
+	p.cancel()
+	<-p.done
+	<-p.done
+	close(p.done)
+	p.done = nil
+	p.cancel = nil
+
+	log.Print("Presence stopped.")
 }
 
 func (p *Presence) githubUpdateLoop(ctx context.Context) {
@@ -48,7 +73,7 @@ func (p *Presence) githubUpdateLoop(ctx context.Context) {
 			return
 		case track := <-trackChan:
 			if track == nil {
-				err := p.github.ChangeUserStatus("", time.Time{}, "", false)
+				err := p.github.ChangeUserStatus(ctx, "", time.Time{}, "", false)
 				if err != nil {
 					log.Print(err)
 					continue
@@ -62,15 +87,13 @@ func (p *Presence) githubUpdateLoop(ctx context.Context) {
 
 			emoji := ":green_circle:"
 
-			if len(p.emojis) > 0 {
+			if len(p.emojis) > 0 && p.emojis[0] != "" {
 				emoji = p.emojis[rand.Int(0, len(p.emojis)-1)]
 			}
 
-			err := p.github.ChangeUserStatus(
-				emoji,
-				time.Now().UTC().Add(120*time.Minute), // listening to a 2-hour monstercat mix? plausible
-				status,
-				false,
+			err := p.github.ChangeUserStatus(ctx, emoji,
+				time.Now().UTC().Add(120*time.Minute),
+				status, false,
 			)
 			if err != nil {
 				log.Print(err)
@@ -102,28 +125,4 @@ func (p *Presence) spotifyPollLoop(ctx context.Context) {
 			}
 		}
 	}
-}
-
-func (p *Presence) Run() error {
-	ctx, cancel := context.WithCancel(context.Background())
-	p.cancel = cancel
-	p.done = make(chan bool)
-
-	go p.githubUpdateLoop(ctx)
-	go p.spotifyPollLoop(ctx)
-
-	log.Print("Presence started.")
-
-	return nil
-}
-
-func (p *Presence) Stop() {
-	p.cancel()
-	<-p.done
-	<-p.done
-	close(p.done)
-	p.done = nil
-	p.cancel = nil
-
-	log.Print("Presence stopped.")
 }

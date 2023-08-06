@@ -61,6 +61,22 @@ func (a *Authn) Client() (*http.Client, error) {
 	return a.createClient(tok)
 }
 
+func (a *Authn) Token() (*oauth2.Token, error) {
+	tok, err := a.provider.Get()
+	if errors.Is(err, ErrTokenNotSet) {
+		go a.startOauthFlow()
+
+		tok = <-a.provider.Updated()
+		if tok == nil {
+			return nil, errors.New("token not set")
+		}
+	} else if err != nil {
+		return nil, err
+	}
+
+	return tok, nil
+}
+
 func (a *Authn) startOauthFlow() {
 	log.Printf("%s requires authentication: %s", a.name, a.oauthUrl())
 }
