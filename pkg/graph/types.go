@@ -22,4 +22,5 @@ type vector3 struct {
 type col struct {
 	pts   []vector3
 	count int
+	color string
 }

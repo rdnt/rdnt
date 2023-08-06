@@ -7,6 +7,8 @@ import (
 
 	svg "github.com/ajstarks/svgo/float"
 	"github.com/akrennmair/slice"
+
+	"github.com/rdnt/rdnt/pkg/github"
 )
 
 // Graph is a graph instance that is used to render a contributions graph.
@@ -17,14 +19,14 @@ type Graph struct {
 
 // NewGraph creates a graph instance with the contributions-per-day that are passed. Graph.Render can then be used to
 // render the graph.
-func NewGraph(contributions []int) *Graph {
+func NewGraph(contributions []github.ContributionsEntry) *Graph {
 	var cols []col
 	var total int
 
-	for k, count := range contributions {
-		total += count
+	for k, entry := range contributions {
+		total += entry.Count
 
-		z := float64(count*2 + 2)
+		z := float64(entry.Count*2 + 2)
 
 		i := float64(k / 7)
 		j := float64(k % 7)
@@ -44,7 +46,7 @@ func NewGraph(contributions []int) *Graph {
 		pts = append(pts, vector3{X: space*i + size, Y: space*j + size, Z: 0})
 		pts = append(pts, vector3{X: space * i, Y: space*j + size, Z: 0})
 
-		cols = append(cols, col{pts: pts, count: count})
+		cols = append(cols, col{pts: pts, count: entry.Count, color: entry.Color})
 	}
 
 	return &Graph{
@@ -77,7 +79,7 @@ func (g *Graph) Render(f io.WriteCloser, theme Theme) error {
 		h, v := float64(180), float64(25)
 
 		// colors used for the 3 visible faces
-		c1, c2, c3 := faceColors(c.count, theme)
+		c1, c2, c3 := faceColors(c.color, theme)
 
 		xs := slice.Map(p1iso, func(vec vector2) float64 { return vec.X + h })
 		ys := slice.Map(p1iso, func(vec vector2) float64 { return vec.Y + v })
@@ -118,16 +120,16 @@ func spaceToIso(x, y, z float64) (h, v float64) {
 	return h, v
 }
 
-func faceColors(r int, theme Theme) (string, string, string) {
+func faceColors(color string, theme Theme) (string, string, string) {
 	switch theme {
 	case Dark:
-		if r > 10 {
+		if color == "#216e39" {
 			return "#39d353", "#10a92c", "#24bd40"
-		} else if r > 7 {
+		} else if color == "#30a14e" {
 			return "#26a641", "#007d1a", "#11912e"
-		} else if r > 3 {
+		} else if color == "#40c463" {
 			return "#006d32", "#004307", "#00571b"
-		} else if r > 0 {
+		} else if color == "#9be9a8" {
 			return "#0e4429", "#001b00", "#002f12"
 		} else {
 			return "#2d333b", "#030a12", "#171e26"
@@ -135,13 +137,13 @@ func faceColors(r int, theme Theme) (string, string, string) {
 	case Light:
 		fallthrough
 	default:
-		if r > 10 {
+		if color == "#216e39" {
 			return "#216e39", "#004410", "#0c5824"
-		} else if r > 7 {
+		} else if color == "#30a14e" {
 			return "#30a14e", "#077725", "#1b8b39"
-		} else if r > 3 {
+		} else if color == "#40c463" {
 			return "#40c463", "#199b3c", "#2daf50"
-		} else if r > 0 {
+		} else if color == "#9be9a8" {
 			return "#9be9a8", "#73c080", "#87d494"
 		} else {
 			return "#ebedf0", "#c2c5c8", "#d6d9dc"

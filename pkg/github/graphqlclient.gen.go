@@ -178,11 +178,18 @@ func (v *contributionsViewUserContributionsCollectionContributionCalendarWeeksCo
 type contributionsViewUserContributionsCollectionContributionCalendarWeeksContributionCalendarWeekContributionDaysContributionCalendarDay struct {
 	// How many contributions were made by the user on this day.
 	ContributionCount int `json:"contributionCount"`
+	// The hex color code that represents how many contributions were made on this day compared to others in the calendar.
+	Color string `json:"color"`
 }
 
 // GetContributionCount returns contributionsViewUserContributionsCollectionContributionCalendarWeeksContributionCalendarWeekContributionDaysContributionCalendarDay.ContributionCount, and is useful for accessing the field via an interface.
 func (v *contributionsViewUserContributionsCollectionContributionCalendarWeeksContributionCalendarWeekContributionDaysContributionCalendarDay) GetContributionCount() int {
 	return v.ContributionCount
+}
+
+// GetColor returns contributionsViewUserContributionsCollectionContributionCalendarWeeksContributionCalendarWeekContributionDaysContributionCalendarDay.Color, and is useful for accessing the field via an interface.
+func (v *contributionsViewUserContributionsCollectionContributionCalendarWeeksContributionCalendarWeekContributionDaysContributionCalendarDay) GetColor() string {
+	return v.Color
 }
 
 // The query or mutation executed by changeUserStatus.
@@ -231,6 +238,7 @@ query contributionsView ($username: String!, $from: DateTime!, $to: DateTime!) {
 				weeks {
 					contributionDays {
 						contributionCount
+						color
 					}
 				}
 			}

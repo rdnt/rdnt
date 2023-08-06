@@ -5,6 +5,7 @@ query contributionsView($username: String!, $from: DateTime!, $to: DateTime!) {
                 weeks {
                     contributionDays {
                         contributionCount
+                        color
                     }
                 }
             }
