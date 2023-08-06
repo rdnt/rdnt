@@ -1,4 +1,4 @@
-// Package graph allows rendering an isometric projection of a GraphqlClient user's contribution history.
+// Package graph allows rendering an isometric projection of a GitHub user's contribution history.
 package graph
 
 import (
