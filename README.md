@@ -6,7 +6,7 @@ My name is Tasos, and I am a working student and software engineer based in Gree
 
 Check out what I've been recently working on:
 - [**ledctl**](https://github.com/rdnt/ledctl) - A wireless ambient lighting controller ([currently being refactored!](https://github.com/rdnt/ledctl3poc))
-- [**m8**](https://github.com/rdnt/m8) - A retro, pixelated watch face for WearOS (**now open source!**)
+- [**m8**](https://github.com/rdnt/m8) - A retro, pixelated watch face for WearOS ([**now open source!**](https://github.com/rdnt/m8/discussions/18))
 <!-- - [**myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager (coming soon™!) -->
 
 ![Contributions](https://github.com/rdnt/rdnt/blob/assets/contributions-dark.svg?raw=true#gh-dark-mode-only)
