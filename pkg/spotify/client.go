@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"reflect"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 	"github.com/zmb3/spotify/v2"
@@ -61,7 +62,10 @@ func (c *Client) getCurrentTrack() (*Track, error) {
 		return nil, errors.New("not authenticated")
 	}
 
-	res, err := c.client.PlayerCurrentlyPlaying(context.Background())
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	res, err := c.client.PlayerCurrentlyPlaying(ctx)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get current track")
 	}

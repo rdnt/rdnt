@@ -3,6 +3,7 @@ package secretsmanager
 import (
 	"context"
 	"crypto/sha256"
+	"time"
 
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
@@ -21,7 +22,9 @@ var ErrNotFound = errors.New("secret not found")
 
 func (m *Manager) Set(name string, secret []byte) error {
 	collection := m.mdb.Database(m.database).Collection("secrets")
-	ctx := context.Background()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
 	b, err := crypto.Aes256CbcEncrypt(secret, m.encKey)
 	if err != nil {
@@ -45,7 +48,8 @@ func (m *Manager) Set(name string, secret []byte) error {
 
 func (m *Manager) Get(name string) ([]byte, error) {
 	collection := m.mdb.Database(m.database).Collection("secrets")
-	ctx := context.Background()
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
 	res := collection.FindOne(ctx, bson.D{primitive.E{Key: "name", Value: name}})
 	err := res.Err()

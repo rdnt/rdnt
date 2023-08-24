@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"sync"
+	"time"
 
 	"github.com/pkg/errors"
 	"golang.org/x/oauth2"
@@ -118,7 +119,10 @@ func (a *Authn) ExtractToken(req *http.Request) error {
 		return errors.New("invalid state")
 	}
 
-	tok, err := a.conf.Exchange(context.Background(), code)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	tok, err := a.conf.Exchange(ctx, code)
 	if err != nil {
 		return errors.Wrap(err, "token exchange failed")
 	}
