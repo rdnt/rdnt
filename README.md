@@ -2,7 +2,9 @@
 
 Welcome to my GitHub profile! :octocat: I'm glad you are here <:
 
-My name is Tasos, and I am a working student and software engineer based in Thessaloniki, Greece. I love designing and programming, tinkering with both software and hardware, as well as gaming from time to time. I mostly use GitHub while iterating on my side-projects c:
+My name is Tasos, and I am a working student and software engineer based in Thessaloniki, Greece.  
+I love designing and programming, tinkering with both software and hardware, as well as gaming from time to time.  
+I mostly use GitHub while iterating on my side-projects c:
 
 Feel free to check out what I've been recently working on!
 - [**rdnt/tachyon**](https://github.com/rdnt/tachyon) - Multiplayer terminal drawing app with CQRS/ES
