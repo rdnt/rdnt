@@ -7,9 +7,9 @@ I love designing and programming, tinkering with both software and hardware, as 
 I mostly use GitHub while iterating on my side-projects c:
 
 Feel free to check out what I've been recently working on!
-- [**rdnt/tachyon**](https://github.com/rdnt/tachyon) - Multiplayer terminal drawing app with CQRS/ES
 - [**rdnt/m8**](https://github.com/rdnt/m8) - Pixelated retro watch face for WearOS 
 - [**rdnt/ledctl**](https://github.com/rdnt/ledctl3poc) - Wireless lighting control system
+- [**rdnt/tachyon**](https://github.com/rdnt/tachyon) - Multiplayer terminal drawing app with CQRS/ES
 <!-- - [**rdnt/myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager -->
 
 
