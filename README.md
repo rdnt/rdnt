@@ -1,4 +1,4 @@
-### Hi! :D
+Hi! :D
 
 Welcome to my GitHub profile! :octocat: I'm glad you are here <:
 
