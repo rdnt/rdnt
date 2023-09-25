@@ -12,5 +12,7 @@ Check out what I've been recently working on:
 - [**rdnt/tachyon**](https://github.com/rdnt/tachyon) - Multiplayer terminal drawing app with CQRS/ES
 <!-- - [**rdnt/myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager -->
 
+Current favorite track: [Fractal - Elements](https://open.spotify.com/track/1YQKR9HxXvu045KE7CzI5H?si=c9f51663a31d4720)
+
 ![Contributions](https://github.com/rdnt/rdnt/blob/assets/contributions-dark.svg?raw=true#gh-dark-mode-only)
 ![Contributions](https://github.com/rdnt/rdnt/blob/assets/contributions-light.svg?raw=true#gh-light-mode-only)
