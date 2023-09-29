@@ -13,7 +13,7 @@ Check out what I've been recently working on:
 - [**rdnt/tinyht**](https://github.com/rdnt/tinyht) - Head tracker for OpenTrack written in TinyGo 
 <!-- - [**rdnt/myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager -->
 
-Current favorite track: [Fractal - Elements](https://open.spotify.com/track/1YQKR9HxXvu045KE7CzI5H?si=c9f51663a31d4720)
+Current favorite track: [goddard. - Nicotine](https://open.spotify.com/track/4K215Fh7PF53yfeSPGtq2L?si=21d1ac6d5a4e4f6a)
 
 ![Contributions](https://github.com/rdnt/rdnt/blob/assets/contributions-dark.svg?raw=true#gh-dark-mode-only)
 ![Contributions](https://github.com/rdnt/rdnt/blob/assets/contributions-light.svg?raw=true#gh-light-mode-only)
