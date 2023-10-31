@@ -39,24 +39,31 @@ func (c *Client) ChangeUserStatus(ctx context.Context,
 	return err
 }
 
-type ContributionsEntry struct {
+type Contributions struct {
+	IsHalloween   bool
+	Contributions []Contribution
+}
+
+type Contribution struct {
 	Count int
 	Color string
 }
 
 func (c *Client) ContributionsView(ctx context.Context,
 	username string, from, to time.Time,
-) ([]ContributionsEntry, error) {
+) (Contributions, error) {
 	resp, err := contributionsView(ctx, c.gql, username, from, to)
 	if err != nil {
-		return nil, err
+		return Contributions{}, err
 	}
 
-	var contributions []ContributionsEntry
+	contributions := Contributions{
+		IsHalloween: resp.User.ContributionsCollection.ContributionCalendar.IsHalloween,
+	}
 
 	for _, w := range resp.User.ContributionsCollection.ContributionCalendar.Weeks {
 		for _, d := range w.ContributionDays {
-			contributions = append(contributions, ContributionsEntry{
+			contributions.Contributions = append(contributions.Contributions, Contribution{
 				Count: d.ContributionCount,
 				Color: d.Color,
 			})

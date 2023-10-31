@@ -148,8 +148,15 @@ func (v *contributionsViewUserContributionsCollection) GetContributionCalendar()
 //
 // A calendar of contributions made on GitHub by a user.
 type contributionsViewUserContributionsCollectionContributionCalendar struct {
+	// Determine if the color set was chosen because it's currently Halloween.
+	IsHalloween bool `json:"isHalloween"`
 	// A list of the weeks of contributions in this calendar.
 	Weeks []contributionsViewUserContributionsCollectionContributionCalendarWeeksContributionCalendarWeek `json:"weeks"`
+}
+
+// GetIsHalloween returns contributionsViewUserContributionsCollectionContributionCalendar.IsHalloween, and is useful for accessing the field via an interface.
+func (v *contributionsViewUserContributionsCollectionContributionCalendar) GetIsHalloween() bool {
+	return v.IsHalloween
 }
 
 // GetWeeks returns contributionsViewUserContributionsCollectionContributionCalendar.Weeks, and is useful for accessing the field via an interface.
@@ -235,6 +242,7 @@ query contributionsView ($username: String!, $from: DateTime!, $to: DateTime!) {
 	user(login: $username) {
 		contributionsCollection(from: $from, to: $to) {
 			contributionCalendar {
+				isHalloween
 				weeks {
 					contributionDays {
 						contributionCount

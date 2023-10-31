@@ -13,17 +13,18 @@ import (
 
 // Graph is a graph instance that is used to render a contributions graph.
 type Graph struct {
-	cols  []col
-	total int
+	isHalloween bool
+	cols        []col
+	total       int
 }
 
 // NewGraph creates a graph instance with the contributions-per-day that are passed. Graph.Render can then be used to
 // render the graph.
-func NewGraph(contributions []github.ContributionsEntry) *Graph {
+func NewGraph(contribs github.Contributions) *Graph {
 	var cols []col
 	var total int
 
-	for k, entry := range contributions {
+	for k, entry := range contribs.Contributions {
 		total += entry.Count
 
 		z := float64(entry.Count*2 + 2)
@@ -50,8 +51,9 @@ func NewGraph(contributions []github.ContributionsEntry) *Graph {
 	}
 
 	return &Graph{
-		cols:  cols,
-		total: total,
+		cols:        cols,
+		total:       total,
+		isHalloween: contribs.IsHalloween,
 	}
 }
 
@@ -79,7 +81,7 @@ func (g *Graph) Render(f io.WriteCloser, theme Theme) error {
 		h, v := float64(180), float64(25)
 
 		// colors used for the 3 visible faces
-		c1, c2, c3 := faceColors(c.color, theme)
+		c1, c2, c3 := faceColors(c.color, theme, g.isHalloween)
 
 		xs := slice.Map(p1iso, func(vec vector2) float64 { return vec.X + h })
 		ys := slice.Map(p1iso, func(vec vector2) float64 { return vec.Y + v })
@@ -120,33 +122,83 @@ func spaceToIso(x, y, z float64) (h, v float64) {
 	return h, v
 }
 
-func faceColors(color string, theme Theme) (string, string, string) {
+const (
+	color0 = "#ebedf0"
+	color1 = "#9be9a8"
+	color2 = "#40c463"
+	color3 = "#30a14e"
+	color4 = "#216e39"
+
+	halloweenColor0 = "#ebedf0"
+	halloweenColor1 = "#ffee4a"
+	halloweenColor2 = "#ffc501"
+	halloweenColor3 = "#fe9600"
+	halloweenColor4 = "#03001c"
+)
+
+func faceColors(color string, theme Theme, isHalloween bool) (string, string, string) {
 	switch theme {
 	case Dark:
-		if color == "#216e39" {
-			return "#39d353", "#10a92c", "#24bd40"
-		} else if color == "#30a14e" {
-			return "#26a641", "#007d1a", "#11912e"
-		} else if color == "#40c463" {
-			return "#006d32", "#004307", "#00571b"
-		} else if color == "#9be9a8" {
-			return "#0e4429", "#001b00", "#002f12"
+		if isHalloween {
+			switch color {
+			case halloweenColor0:
+				return "#161b22", "#000000", "#00050c"
+			case halloweenColor1:
+				return "#631c03", "#390000", "#4d0800"
+			case halloweenColor2:
+				return "#bd561d", "#942d00", "#a84109"
+			case halloweenColor3:
+				return "#fa7a18", "#d05000", "#e46403"
+			case halloweenColor4:
+				return "#fddf68", "#d3b53e", "#e7c952"
+			}
 		} else {
-			return "#2d333b", "#030a12", "#171e26"
+			switch color {
+			case color0:
+				return "#2d333b", "#030a12", "#171e26"
+			case color1:
+				return "#0e4429", "#001b00", "#002f12"
+			case color2:
+				return "#006d32", "#004307", "#00571b"
+			case color3:
+				return "#26a641", "#007d1a", "#11912e"
+			case color4:
+				return "#39d353", "#10a92c", "#24bd40"
+			}
 		}
-	case Light:
-		fallthrough
+
+		return "#2d333b", "#030a12", "#171e26"
 	default:
-		if color == "#216e39" {
-			return "#216e39", "#004410", "#0c5824"
-		} else if color == "#30a14e" {
-			return "#30a14e", "#077725", "#1b8b39"
-		} else if color == "#40c463" {
-			return "#40c463", "#199b3c", "#2daf50"
-		} else if color == "#9be9a8" {
-			return "#9be9a8", "#73c080", "#87d494"
+		fallthrough
+	case Light:
+		if isHalloween {
+			switch color {
+			case halloweenColor0:
+				return "#ebedf0", "#c2c5c8", "#d6d9dc"
+			case halloweenColor1:
+				return "#ffee4a", "#d5c522", "#e9d936"
+			case halloweenColor2:
+				return "#ffc501", "#d59d00", "#e9b100"
+			case halloweenColor3:
+				return "#fe9600", "#d56e00", "#e98200"
+			case halloweenColor4:
+				return "#03001c", "#000001", "#000007"
+			}
 		} else {
-			return "#ebedf0", "#c2c5c8", "#d6d9dc"
+			switch color {
+			case color0:
+				return "#ebedf0", "#c2c5c8", "#d6d9dc"
+			case color1:
+				return "#9be9a8", "#73c080", "#87d494"
+			case color2:
+				return "#40c463", "#199b3c", "#2daf50"
+			case color3:
+				return "#30a14e", "#077725", "#1b8b39"
+			case color4:
+				return "#216e39", "#004410", "#0c5824"
+			}
 		}
+
+		return "#ebedf0", "#c2c5c8", "#d6d9dc"
 	}
 }
