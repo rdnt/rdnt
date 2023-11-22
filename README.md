@@ -11,7 +11,7 @@ Check out what I've been recently working on:
 - [**rdnt/ledctl**](https://github.com/rdnt/ledctl3poc) - Wireless lighting control system
 - [**rdnt/tachyon**](https://github.com/rdnt/tachyon) - Multiplayer terminal drawing app with CQRS/ES
 - [**rdnt/tinyht**](https://github.com/rdnt/tinyht) - Head tracker for OpenTrack written in TinyGo 
-<!-- - [**rdnt/myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager -->
+- [**rdnt/myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager
 
 Current favorite track: [goddard. - Nicotine](https://open.spotify.com/track/4K215Fh7PF53yfeSPGtq2L?si=21d1ac6d5a4e4f6a)
 
