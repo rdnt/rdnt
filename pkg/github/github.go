@@ -42,6 +42,11 @@ func (c *Client) ChangeUserStatus(ctx context.Context,
 type Contributions struct {
 	IsHalloween   bool
 	Contributions []Contribution
+	Commits       int
+	Issues        int
+	PullRequests  int
+	Reviews       int
+	Total         int
 }
 
 type Contribution struct {
@@ -58,7 +63,12 @@ func (c *Client) ContributionsView(ctx context.Context,
 	}
 
 	contributions := Contributions{
-		IsHalloween: resp.User.ContributionsCollection.ContributionCalendar.IsHalloween,
+		IsHalloween:  resp.User.ContributionsCollection.ContributionCalendar.IsHalloween,
+		Commits:      resp.User.ContributionsCollection.TotalCommitContributions,
+		Issues:       resp.User.ContributionsCollection.TotalIssueContributions,
+		PullRequests: resp.User.ContributionsCollection.TotalPullRequestContributions,
+		Reviews:      resp.User.ContributionsCollection.TotalPullRequestReviewContributions,
+		Total:        resp.User.ContributionsCollection.ContributionCalendar.TotalContributions,
 	}
 
 	for _, w := range resp.User.ContributionsCollection.ContributionCalendar.Weeks {
@@ -71,4 +81,29 @@ func (c *Client) ContributionsView(ctx context.Context,
 	}
 
 	return contributions, nil
+}
+
+type Stats struct {
+	TotalContribs   int
+	PrivateContribs int
+	Issues          int
+	PullRequests    int
+}
+
+func (c *Client) UserStats(ctx context.Context,
+	username string,
+) (Stats, error) {
+	resp, err := userInfo(ctx, c.gql, username)
+	if err != nil {
+		return Stats{}, err
+	}
+
+	stats := Stats{
+		TotalContribs:   resp.User.ContributionsCollection.TotalCommitContributions,
+		PrivateContribs: resp.User.ContributionsCollection.RestrictedContributionsCount,
+		PullRequests:    resp.User.PullRequests.TotalCount,
+		Issues:          resp.User.Issues.TotalCount,
+	}
+
+	return stats, nil
 }

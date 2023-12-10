@@ -2,6 +2,7 @@ schema: schema.graphql
 operations:
   - changeUserStatus.graphql
   - contributionsView.graphql
+  - userInfo.graphql
 generated: graphqlclient.gen.go
 package: github
 optional: "pointer"

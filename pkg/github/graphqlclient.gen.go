@@ -68,6 +68,14 @@ func (v *__contributionsViewInput) GetFrom() time.Time { return v.From }
 // GetTo returns __contributionsViewInput.To, and is useful for accessing the field via an interface.
 func (v *__contributionsViewInput) GetTo() time.Time { return v.To }
 
+// __userInfoInput is used internally by genqlient
+type __userInfoInput struct {
+	Username string `json:"username"`
+}
+
+// GetUsername returns __userInfoInput.Username, and is useful for accessing the field via an interface.
+func (v *__userInfoInput) GetUsername() string { return v.Username }
+
 // changeUserStatusChangeUserStatusChangeUserStatusPayload includes the requested fields of the GraphQL type ChangeUserStatusPayload.
 // The GraphQL type's documentation follows.
 //
@@ -134,8 +142,44 @@ func (v *contributionsViewUser) GetContributionsCollection() contributionsViewUs
 //
 // A contributions collection aggregates contributions such as opened issues and commits created by a user.
 type contributionsViewUserContributionsCollection struct {
+	// How many commits were made by the user in this time span.
+	TotalCommitContributions int `json:"totalCommitContributions"`
+	// How many issues the user opened.
+	TotalIssueContributions int `json:"totalIssueContributions"`
+	// How many pull requests the user opened.
+	TotalPullRequestContributions int `json:"totalPullRequestContributions"`
+	// How many pull request reviews the user left.
+	TotalPullRequestReviewContributions int `json:"totalPullRequestReviewContributions"`
+	// A count of contributions made by the user that the viewer cannot access. Only
+	// non-zero when the user has chosen to share their private contribution counts.
+	RestrictedContributionsCount int `json:"restrictedContributionsCount"`
 	// A calendar of this user's contributions on GitHub.
 	ContributionCalendar contributionsViewUserContributionsCollectionContributionCalendar `json:"contributionCalendar"`
+}
+
+// GetTotalCommitContributions returns contributionsViewUserContributionsCollection.TotalCommitContributions, and is useful for accessing the field via an interface.
+func (v *contributionsViewUserContributionsCollection) GetTotalCommitContributions() int {
+	return v.TotalCommitContributions
+}
+
+// GetTotalIssueContributions returns contributionsViewUserContributionsCollection.TotalIssueContributions, and is useful for accessing the field via an interface.
+func (v *contributionsViewUserContributionsCollection) GetTotalIssueContributions() int {
+	return v.TotalIssueContributions
+}
+
+// GetTotalPullRequestContributions returns contributionsViewUserContributionsCollection.TotalPullRequestContributions, and is useful for accessing the field via an interface.
+func (v *contributionsViewUserContributionsCollection) GetTotalPullRequestContributions() int {
+	return v.TotalPullRequestContributions
+}
+
+// GetTotalPullRequestReviewContributions returns contributionsViewUserContributionsCollection.TotalPullRequestReviewContributions, and is useful for accessing the field via an interface.
+func (v *contributionsViewUserContributionsCollection) GetTotalPullRequestReviewContributions() int {
+	return v.TotalPullRequestReviewContributions
+}
+
+// GetRestrictedContributionsCount returns contributionsViewUserContributionsCollection.RestrictedContributionsCount, and is useful for accessing the field via an interface.
+func (v *contributionsViewUserContributionsCollection) GetRestrictedContributionsCount() int {
+	return v.RestrictedContributionsCount
 }
 
 // GetContributionCalendar returns contributionsViewUserContributionsCollection.ContributionCalendar, and is useful for accessing the field via an interface.
@@ -150,6 +194,8 @@ func (v *contributionsViewUserContributionsCollection) GetContributionCalendar()
 type contributionsViewUserContributionsCollectionContributionCalendar struct {
 	// Determine if the color set was chosen because it's currently Halloween.
 	IsHalloween bool `json:"isHalloween"`
+	// The count of total contributions in the calendar.
+	TotalContributions int `json:"totalContributions"`
 	// A list of the weeks of contributions in this calendar.
 	Weeks []contributionsViewUserContributionsCollectionContributionCalendarWeeksContributionCalendarWeek `json:"weeks"`
 }
@@ -157,6 +203,11 @@ type contributionsViewUserContributionsCollectionContributionCalendar struct {
 // GetIsHalloween returns contributionsViewUserContributionsCollectionContributionCalendar.IsHalloween, and is useful for accessing the field via an interface.
 func (v *contributionsViewUserContributionsCollectionContributionCalendar) GetIsHalloween() bool {
 	return v.IsHalloween
+}
+
+// GetTotalContributions returns contributionsViewUserContributionsCollectionContributionCalendar.TotalContributions, and is useful for accessing the field via an interface.
+func (v *contributionsViewUserContributionsCollectionContributionCalendar) GetTotalContributions() int {
+	return v.TotalContributions
 }
 
 // GetWeeks returns contributionsViewUserContributionsCollectionContributionCalendar.Weeks, and is useful for accessing the field via an interface.
@@ -198,6 +249,87 @@ func (v *contributionsViewUserContributionsCollectionContributionCalendarWeeksCo
 func (v *contributionsViewUserContributionsCollectionContributionCalendarWeeksContributionCalendarWeekContributionDaysContributionCalendarDay) GetColor() string {
 	return v.Color
 }
+
+// userInfoResponse is returned by userInfo on success.
+type userInfoResponse struct {
+	// Lookup a user by login.
+	User *userInfoUser `json:"user"`
+}
+
+// GetUser returns userInfoResponse.User, and is useful for accessing the field via an interface.
+func (v *userInfoResponse) GetUser() *userInfoUser { return v.User }
+
+// userInfoUser includes the requested fields of the GraphQL type User.
+// The GraphQL type's documentation follows.
+//
+// A user is an individual's account on GitHub that owns repositories and can make new content.
+type userInfoUser struct {
+	// The collection of contributions this user has made to different repositories.
+	ContributionsCollection userInfoUserContributionsCollection `json:"contributionsCollection"`
+	// A list of pull requests associated with this user.
+	PullRequests userInfoUserPullRequestsPullRequestConnection `json:"pullRequests"`
+	// A list of issues associated with this user.
+	Issues userInfoUserIssuesIssueConnection `json:"issues"`
+}
+
+// GetContributionsCollection returns userInfoUser.ContributionsCollection, and is useful for accessing the field via an interface.
+func (v *userInfoUser) GetContributionsCollection() userInfoUserContributionsCollection {
+	return v.ContributionsCollection
+}
+
+// GetPullRequests returns userInfoUser.PullRequests, and is useful for accessing the field via an interface.
+func (v *userInfoUser) GetPullRequests() userInfoUserPullRequestsPullRequestConnection {
+	return v.PullRequests
+}
+
+// GetIssues returns userInfoUser.Issues, and is useful for accessing the field via an interface.
+func (v *userInfoUser) GetIssues() userInfoUserIssuesIssueConnection { return v.Issues }
+
+// userInfoUserContributionsCollection includes the requested fields of the GraphQL type ContributionsCollection.
+// The GraphQL type's documentation follows.
+//
+// A contributions collection aggregates contributions such as opened issues and commits created by a user.
+type userInfoUserContributionsCollection struct {
+	// How many commits were made by the user in this time span.
+	TotalCommitContributions int `json:"totalCommitContributions"`
+	// A count of contributions made by the user that the viewer cannot access. Only
+	// non-zero when the user has chosen to share their private contribution counts.
+	RestrictedContributionsCount int `json:"restrictedContributionsCount"`
+}
+
+// GetTotalCommitContributions returns userInfoUserContributionsCollection.TotalCommitContributions, and is useful for accessing the field via an interface.
+func (v *userInfoUserContributionsCollection) GetTotalCommitContributions() int {
+	return v.TotalCommitContributions
+}
+
+// GetRestrictedContributionsCount returns userInfoUserContributionsCollection.RestrictedContributionsCount, and is useful for accessing the field via an interface.
+func (v *userInfoUserContributionsCollection) GetRestrictedContributionsCount() int {
+	return v.RestrictedContributionsCount
+}
+
+// userInfoUserIssuesIssueConnection includes the requested fields of the GraphQL type IssueConnection.
+// The GraphQL type's documentation follows.
+//
+// The connection type for Issue.
+type userInfoUserIssuesIssueConnection struct {
+	// Identifies the total count of items in the connection.
+	TotalCount int `json:"totalCount"`
+}
+
+// GetTotalCount returns userInfoUserIssuesIssueConnection.TotalCount, and is useful for accessing the field via an interface.
+func (v *userInfoUserIssuesIssueConnection) GetTotalCount() int { return v.TotalCount }
+
+// userInfoUserPullRequestsPullRequestConnection includes the requested fields of the GraphQL type PullRequestConnection.
+// The GraphQL type's documentation follows.
+//
+// The connection type for PullRequest.
+type userInfoUserPullRequestsPullRequestConnection struct {
+	// Identifies the total count of items in the connection.
+	TotalCount int `json:"totalCount"`
+}
+
+// GetTotalCount returns userInfoUserPullRequestsPullRequestConnection.TotalCount, and is useful for accessing the field via an interface.
+func (v *userInfoUserPullRequestsPullRequestConnection) GetTotalCount() int { return v.TotalCount }
 
 // The query or mutation executed by changeUserStatus.
 const changeUserStatus_Operation = `
@@ -241,8 +373,14 @@ const contributionsView_Operation = `
 query contributionsView ($username: String!, $from: DateTime!, $to: DateTime!) {
 	user(login: $username) {
 		contributionsCollection(from: $from, to: $to) {
+			totalCommitContributions
+			totalIssueContributions
+			totalPullRequestContributions
+			totalPullRequestReviewContributions
+			restrictedContributionsCount
 			contributionCalendar {
 				isHalloween
+				totalContributions
 				weeks {
 					contributionDays {
 						contributionCount
@@ -274,6 +412,50 @@ func contributionsView(
 	var err error
 
 	var data contributionsViewResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by userInfo.
+const userInfo_Operation = `
+query userInfo ($username: String!) {
+	user(login: $username) {
+		contributionsCollection {
+			totalCommitContributions
+			restrictedContributionsCount
+		}
+		pullRequests {
+			totalCount
+		}
+		issues {
+			totalCount
+		}
+	}
+}
+`
+
+func userInfo(
+	ctx context.Context,
+	client graphql.Client,
+	username string,
+) (*userInfoResponse, error) {
+	req := &graphql.Request{
+		OpName: "userInfo",
+		Query:  userInfo_Operation,
+		Variables: &__userInfoInput{
+			Username: username,
+		},
+	}
+	var err error
+
+	var data userInfoResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(

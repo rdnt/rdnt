@@ -2,6 +2,7 @@
 package graph
 
 import (
+	"fmt"
 	"io"
 	"math"
 
@@ -13,14 +14,17 @@ import (
 
 // Graph is a graph instance that is used to render a contributions graph.
 type Graph struct {
-	isHalloween bool
-	cols        []col
-	total       int
+	isHalloween  bool
+	cols         []col
+	total        int
+	priv         int
+	issues       int
+	pullRequests int
 }
 
 // NewGraph creates a graph instance with the contributions-per-day that are passed. Graph.Render can then be used to
 // render the graph.
-func NewGraph(contribs github.Contributions) *Graph {
+func NewGraph(contribs github.Contributions, stats github.Stats) *Graph {
 	var cols []col
 	var total int
 
@@ -51,9 +55,12 @@ func NewGraph(contribs github.Contributions) *Graph {
 	}
 
 	return &Graph{
-		cols:        cols,
-		total:       total,
-		isHalloween: contribs.IsHalloween,
+		cols:         cols,
+		total:        stats.TotalContribs + stats.PrivateContribs,
+		priv:         stats.PrivateContribs,
+		isHalloween:  contribs.IsHalloween,
+		issues:       stats.Issues,
+		pullRequests: stats.PullRequests,
 	}
 }
 
@@ -95,6 +102,42 @@ func (g *Graph) Render(f io.WriteCloser, theme Theme) error {
 		ys = slice.Map(p3iso, func(vec vector2) float64 { return vec.Y + v })
 		canvas.Polygon(xs, ys, "fill: "+c3)
 	}
+
+	var c1, c2 string
+
+	if g.isHalloween {
+		c1, _, _ = faceColors(halloweenColor0, 1-theme, true)
+		c2, _, _ = faceColors(halloweenColor1, 1-theme, true)
+	} else {
+		c1, _, _ = faceColors(color0, 1-theme, false)
+		c2, _, _ = faceColors(color1, 1-theme, false)
+	}
+
+	deci := canvas.Decimals
+	font := `-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji'`
+
+	canvas.Gstyle(fmt.Sprintf("text-anchor:%s;font-family:%s;", "end", font))
+
+	stats := [][2]string{
+		{"Pull Requests", fmt.Sprint(g.pullRequests)},
+		{"Issues", fmt.Sprint(g.issues)},
+	}
+
+	for i, stat := range stats {
+		canvas.Text(840-100-10, float64((i*72)+24)+10, stat[0], fmt.Sprintf("font-weight:400;fill:%s;font-size:%.*fpx;", c1, deci, 20.0))
+		canvas.Text(840-100-10, float64((i*72)+56)+10, stat[1], fmt.Sprintf("font-weight:700;fill:%s;font-size:%.*fpx;", c2, deci, 24.0))
+	}
+
+	canvas.Gend()
+
+	total := [2]string{"Total contributions", fmt.Sprint(g.total)}
+
+	canvas.Gstyle(fmt.Sprintf("text-anchor:%s;font-family:%s;", "start", font))
+
+	canvas.Text(100+10, 400-62.0-8-10, total[0], fmt.Sprintf("font-weight:400;fill:%s;font-size:%.*fpx;", c1, deci, 24.0))
+	canvas.Text(100+10, 400-28.0-8-10, total[1], fmt.Sprintf("font-weight:700;fill:%s;font-size:%.*fpx;", c2, deci, 28.0))
+
+	canvas.Gend()
 
 	// save the svg
 	canvas.End()

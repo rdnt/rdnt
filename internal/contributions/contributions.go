@@ -54,6 +54,11 @@ func (c *Contributions) generateContributionsGraph(ctx context.Context) error {
 		return err
 	}
 
+	stats, err := c.graphqlClient.UserStats(ctx, c.username)
+	if err != nil {
+		return err
+	}
+
 	err = os.MkdirAll("assets", os.ModePerm)
 	if err != nil && !os.IsExist(err) {
 		return err
@@ -75,7 +80,7 @@ func (c *Contributions) generateContributionsGraph(ctx context.Context) error {
 		_ = fl.Close()
 	}()
 
-	g := graph.NewGraph(contribs)
+	g := graph.NewGraph(contribs, stats)
 
 	err = g.Render(fd, graph.Dark)
 	if err != nil {
