@@ -63,12 +63,12 @@ func (c *Client) ContributionsView(ctx context.Context,
 	}
 
 	contributions := Contributions{
-		IsHalloween:  resp.User.ContributionsCollection.ContributionCalendar.IsHalloween,
-		Commits:      resp.User.ContributionsCollection.TotalCommitContributions,
-		Issues:       resp.User.ContributionsCollection.TotalIssueContributions,
-		PullRequests: resp.User.ContributionsCollection.TotalPullRequestContributions,
-		Reviews:      resp.User.ContributionsCollection.TotalPullRequestReviewContributions,
-		Total:        resp.User.ContributionsCollection.ContributionCalendar.TotalContributions,
+		IsHalloween: resp.User.ContributionsCollection.ContributionCalendar.IsHalloween,
+		//Commits:      resp.User.ContributionsCollection.TotalCommitContributions,
+		//Issues:       resp.User.ContributionsCollection.TotalIssueContributions,
+		//PullRequests: resp.User.ContributionsCollection.TotalPullRequestContributions,
+		//Reviews:      resp.User.ContributionsCollection.TotalPullRequestReviewContributions,
+		//Total:        resp.User.ContributionsCollection.ContributionCalendar.TotalContributions,
 	}
 
 	for _, w := range resp.User.ContributionsCollection.ContributionCalendar.Weeks {

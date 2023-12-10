@@ -103,39 +103,39 @@ func (g *Graph) Render(f io.WriteCloser, theme Theme) error {
 		canvas.Polygon(xs, ys, "fill: "+c3)
 	}
 
-	var c1, c2 string
+	//var c1, c2 string
+	//
+	//if g.isHalloween {
+	//	c1, _, _ = faceColors(halloweenColor0, 1-theme, true)
+	//	c2, _, _ = faceColors(halloweenColor1, 1-theme, true)
+	//} else {
+	//	c1, _, _ = faceColors(color0, 1-theme, false)
+	//	c2, _, _ = faceColors(color1, 1-theme, false)
+	//}
 
-	if g.isHalloween {
-		c1, _, _ = faceColors(halloweenColor0, 1-theme, true)
-		c2, _, _ = faceColors(halloweenColor1, 1-theme, true)
-	} else {
-		c1, _, _ = faceColors(color0, 1-theme, false)
-		c2, _, _ = faceColors(color1, 1-theme, false)
-	}
-
-	deci := canvas.Decimals
+	//deci := canvas.Decimals
 	font := `-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji'`
 
 	canvas.Gstyle(fmt.Sprintf("text-anchor:%s;font-family:%s;", "end", font))
 
-	stats := [][2]string{
-		{"Pull Requests", fmt.Sprint(g.pullRequests)},
-		{"Issues", fmt.Sprint(g.issues)},
-	}
-
-	for i, stat := range stats {
-		canvas.Text(840-100-10, float64((i*72)+24)+10, stat[0], fmt.Sprintf("font-weight:400;fill:%s;font-size:%.*fpx;", c1, deci, 20.0))
-		canvas.Text(840-100-10, float64((i*72)+56)+10, stat[1], fmt.Sprintf("font-weight:700;fill:%s;font-size:%.*fpx;", c2, deci, 24.0))
-	}
+	//stats := [][2]string{
+	//	{"Pull Requests", fmt.Sprint(g.pullRequests)},
+	//	{"Issues", fmt.Sprint(g.issues)},
+	//}
+	//
+	//for i, stat := range stats {
+	//	canvas.Text(840-100-10, float64((i*72)+24)+10, stat[0], fmt.Sprintf("font-weight:400;fill:%s;font-size:%.*fpx;", c1, deci, 20.0))
+	//	canvas.Text(840-100-10, float64((i*72)+56)+10, stat[1], fmt.Sprintf("font-weight:700;fill:%s;font-size:%.*fpx;", c2, deci, 24.0))
+	//}
 
 	canvas.Gend()
 
-	total := [2]string{"Total contributions", fmt.Sprint(g.total)}
+	//total := [2]string{"Total contributions", fmt.Sprint(g.total)}
 
 	canvas.Gstyle(fmt.Sprintf("text-anchor:%s;font-family:%s;", "start", font))
 
-	canvas.Text(100+10, 400-62.0-8-10, total[0], fmt.Sprintf("font-weight:400;fill:%s;font-size:%.*fpx;", c1, deci, 24.0))
-	canvas.Text(100+10, 400-28.0-8-10, total[1], fmt.Sprintf("font-weight:700;fill:%s;font-size:%.*fpx;", c2, deci, 28.0))
+	//canvas.Text(100+10, 400-62.0-8-10, total[0], fmt.Sprintf("font-weight:400;fill:%s;font-size:%.*fpx;", c1, deci, 24.0))
+	//canvas.Text(100+10, 400-28.0-8-10, total[1], fmt.Sprintf("font-weight:700;fill:%s;font-size:%.*fpx;", c2, deci, 28.0))
 
 	canvas.Gend()
 
