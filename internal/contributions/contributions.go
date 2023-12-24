@@ -5,8 +5,10 @@ import (
 	"os"
 	"time"
 
+	"github.com/rdnt/contributions-graph"
+	"github.com/samber/lo"
+
 	"github.com/rdnt/rdnt/pkg/github"
-	"github.com/rdnt/rdnt/pkg/graph"
 	authn "github.com/rdnt/rdnt/pkg/oauth"
 )
 
@@ -49,15 +51,15 @@ func (c *Contributions) generateContributionsGraph(ctx context.Context) error {
 	from := time.Now().UTC().AddDate(-1, 0, -7)
 	to := time.Now().UTC()
 
-	contribs, err := c.graphqlClient.ContributionsView(ctx, c.username, from, to)
+	contribsView, err := c.graphqlClient.ContributionsView(ctx, c.username, from, to)
 	if err != nil {
 		return err
 	}
 
-	stats, err := c.graphqlClient.UserStats(ctx, c.username)
-	if err != nil {
-		return err
-	}
+	//stats, err := c.graphqlClient.UserStats(ctx, c.username)
+	//if err != nil {
+	//	return err
+	//}
 
 	err = os.MkdirAll("assets", os.ModePerm)
 	if err != nil && !os.IsExist(err) {
@@ -80,14 +82,21 @@ func (c *Contributions) generateContributionsGraph(ctx context.Context) error {
 		_ = fl.Close()
 	}()
 
-	g := graph.NewGraph(contribs, stats)
+	contribs := lo.Map(contribsView.Contributions, func(c github.Contribution, _ int) graph.ContributionDay {
+		return graph.ContributionDay{
+			Count: c.Count,
+			Color: c.Color,
+		}
+	})
 
-	err = g.Render(fd, graph.Dark)
+	g := graph.NewGraph(contribs)
+
+	err = g.Render(fd, graph.Dark, contribsView.IsHalloween)
 	if err != nil {
 		return err
 	}
 
-	err = g.Render(fl, graph.Light)
+	err = g.Render(fl, graph.Light, contribsView.IsHalloween)
 	if err != nil {
 		return err
 	}

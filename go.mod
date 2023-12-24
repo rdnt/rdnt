@@ -1,22 +1,26 @@
 module github.com/rdnt/rdnt
 
 // +heroku goVersion go1.18
-go 1.18
+go 1.21
+
+toolchain go1.21.4
 
 require (
 	github.com/Khan/genqlient v0.6.0
 	github.com/agnivade/levenshtein v1.1.1
-	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/akrennmair/slice v0.0.0-20220105203817-49445747ab81
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.3.0
 	github.com/pkg/errors v0.9.1
+	github.com/rdnt/contributions-graph v0.0.0-20231224165815-267fd68d1c3c
+	github.com/samber/lo v1.39.0
 	github.com/zmb3/spotify/v2 v2.3.1
 	go.mongodb.org/mongo-driver v1.12.0
 	golang.org/x/oauth2 v0.9.0
 )
 
 require (
+	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b // indirect
+	github.com/akrennmair/slice v0.0.0-20220105203817-49445747ab81 // indirect
 	github.com/alexflint/go-arg v1.4.3 // indirect
 	github.com/alexflint/go-scalar v1.2.0 // indirect
 	github.com/bytedance/sonic v1.9.2 // indirect
@@ -49,6 +53,7 @@ require (
 	github.com/youmark/pkcs8 v0.0.0-20201027041543-1326539a0a0a // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/crypto v0.14.0 // indirect
+	golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17 // indirect
 	golang.org/x/mod v0.12.0 // indirect
 	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
