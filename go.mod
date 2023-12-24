@@ -3,13 +3,15 @@ module github.com/rdnt/rdnt
 // +heroku goVersion go1.18
 go 1.21
 
+toolchain go1.21.4
+
 require (
 	github.com/Khan/genqlient v0.6.0
 	github.com/agnivade/levenshtein v1.1.1
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.5.0
 	github.com/pkg/errors v0.9.1
-	github.com/rdnt/contributions-graph v0.0.0-20231224165815-267fd68d1c3c
+	github.com/rdnt/contributions-graph v0.0.0-20231224171213-548e3a3e6c7c
 	github.com/samber/lo v1.39.0
 	github.com/zmb3/spotify/v2 v2.4.0
 	go.mongodb.org/mongo-driver v1.13.1
