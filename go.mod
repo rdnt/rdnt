@@ -3,8 +3,6 @@ module github.com/rdnt/rdnt
 // +heroku goVersion go1.18
 go 1.21
 
-toolchain go1.21.4
-
 require (
 	github.com/Khan/genqlient v0.6.0
 	github.com/agnivade/levenshtein v1.1.1
