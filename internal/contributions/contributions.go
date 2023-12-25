@@ -82,6 +82,10 @@ func (c *Contributions) generateContributionsGraph(ctx context.Context) error {
 		_ = fl.Close()
 	}()
 
+	if contribsView.IsHalloween {
+		contribsView.Contributions = normalizeHalloweenColors(contribsView.Contributions)
+	}
+
 	contribs := lo.Map(contribsView.Contributions, func(c github.Contribution, _ int) graph.ContributionDay {
 		return graph.ContributionDay{
 			Count: c.Count,
@@ -91,15 +95,70 @@ func (c *Contributions) generateContributionsGraph(ctx context.Context) error {
 
 	g := graph.NewGraph(contribs)
 
-	err = g.Render(fd, graph.Dark, contribsView.IsHalloween)
+	err = g.Render(fd, customGithubContributionsDarkTheme)
 	if err != nil {
 		return err
 	}
 
-	err = g.Render(fl, graph.Light, contribsView.IsHalloween)
+	err = g.Render(fl, customGithubContributionsLightTheme)
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func customGithubContributionsDarkTheme(color string) string {
+	switch color {
+	case graph.Color0:
+		color = "#2e2e3b"
+	case graph.Color1:
+		color = "#CAB9F8"
+	case graph.Color2:
+		color = "#A791E9"
+	case graph.Color3:
+		color = "#9473ee"
+	case graph.Color4:
+		color = "#7347ea"
+	}
+	return color
+}
+
+func customGithubContributionsLightTheme(color string) string {
+	switch color {
+	case graph.Color0:
+		color = "#F6F3FF"
+	case graph.Color1:
+		color = "#E4DBFC"
+	case graph.Color2:
+		color = "#CAB9F8"
+	case graph.Color3:
+		color = "#B8A2F6"
+	case graph.Color4:
+		color = "#AA8FF5"
+	}
+	return color
+}
+
+func normalizeHalloweenColors(contribs []github.Contribution) []github.Contribution {
+	for i, c := range contribs {
+		var color string
+		switch c.Color {
+		case "#ebedf0":
+			color = "#ebedf0"
+		case "#ffee4a":
+			color = "#9be9a8"
+		case "#ffc501":
+			color = "#40c463"
+		case "#fe9600":
+			color = "#30a14e"
+		case "#03001c":
+			color = "#216e39"
+		default:
+			color = "#ebedf0"
+		}
+		contribs[i].Color = color
+	}
+
+	return contribs
 }

@@ -11,7 +11,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.5.0
 	github.com/pkg/errors v0.9.1
-	github.com/rdnt/contributions-graph v0.0.0-20231224171213-548e3a3e6c7c
+	github.com/rdnt/contributions-graph v0.0.0-20231225002545-8a34b99302fc
 	github.com/samber/lo v1.39.0
 	github.com/zmb3/spotify/v2 v2.4.0
 	go.mongodb.org/mongo-driver v1.13.1
@@ -44,6 +44,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/montanaflynn/stats v0.7.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.1 // indirect
+	github.com/teacat/noire v1.1.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	github.com/vektah/gqlparser/v2 v2.5.10 // indirect
