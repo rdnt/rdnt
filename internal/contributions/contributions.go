@@ -111,15 +111,15 @@ func (c *Contributions) generateContributionsGraph(ctx context.Context) error {
 func customGithubContributionsDarkTheme(color string) string {
 	switch color {
 	case graph.Color0:
-		color = "#2e2e3b"
+		color = "#22262d"
 	case graph.Color1:
-		color = "#CAB9F8"
-	case graph.Color2:
-		color = "#A791E9"
-	case graph.Color3:
-		color = "#9473ee"
-	case graph.Color4:
 		color = "#7347ea"
+	case graph.Color2:
+		color = "#9473ee"
+	case graph.Color3:
+		color = "#A791E9"
+	case graph.Color4:
+		color = "#CAB9F8"
 	}
 	return color
 }
