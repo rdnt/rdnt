@@ -9,9 +9,9 @@ I mostly use GitHub while iterating on side-projects.
 Projects I've been recently working on:
 - [**rdnt/m8**](https://github.com/rdnt/m8) - Pixelated retro watch face for WearOS
 - [**rdnt/ledctl3poc**](https://github.com/rdnt/ledctl3poc) - Wireless lighting control system ([currently being refactored!](https://github.com/rdnt/ledctl3poc))
-<!-- - [**rdnt/tachyon**](https://github.com/rdnt/tachyon) - Multiplayer terminal drawing app with CQRS/ES-->
-- [**rdnt/tinyht**](https://github.com/rdnt/tinyht) - Head tracker for OpenTrack written in TinyGo 
+- [**rdnt/tinyht**](https://github.com/rdnt/tinyht) - Head tracker for OpenTrack written in TinyGo
 - [**rdnt/myst**](https://github.com/rdnt/myst) - Zero-knowledge, end-to-end encrypted password manager
+<!-- - [**rdnt/tachyon**](https://github.com/rdnt/tachyon) - Multiplayer terminal drawing app with CQRS/ES-->
 
 Current favorite track: [goddard. - Nicotine](https://open.spotify.com/track/4K215Fh7PF53yfeSPGtq2L?si=21d1ac6d5a4e4f6a)
 
