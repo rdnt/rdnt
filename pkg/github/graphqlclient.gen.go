@@ -264,17 +264,10 @@ func (v *userInfoResponse) GetUser() *userInfoUser { return v.User }
 //
 // A user is an individual's account on GitHub that owns repositories and can make new content.
 type userInfoUser struct {
-	// The collection of contributions this user has made to different repositories.
-	ContributionsCollection userInfoUserContributionsCollection `json:"contributionsCollection"`
 	// A list of pull requests associated with this user.
 	PullRequests userInfoUserPullRequestsPullRequestConnection `json:"pullRequests"`
 	// A list of issues associated with this user.
 	Issues userInfoUserIssuesIssueConnection `json:"issues"`
-}
-
-// GetContributionsCollection returns userInfoUser.ContributionsCollection, and is useful for accessing the field via an interface.
-func (v *userInfoUser) GetContributionsCollection() userInfoUserContributionsCollection {
-	return v.ContributionsCollection
 }
 
 // GetPullRequests returns userInfoUser.PullRequests, and is useful for accessing the field via an interface.
@@ -284,28 +277,6 @@ func (v *userInfoUser) GetPullRequests() userInfoUserPullRequestsPullRequestConn
 
 // GetIssues returns userInfoUser.Issues, and is useful for accessing the field via an interface.
 func (v *userInfoUser) GetIssues() userInfoUserIssuesIssueConnection { return v.Issues }
-
-// userInfoUserContributionsCollection includes the requested fields of the GraphQL type ContributionsCollection.
-// The GraphQL type's documentation follows.
-//
-// A contributions collection aggregates contributions such as opened issues and commits created by a user.
-type userInfoUserContributionsCollection struct {
-	// How many commits were made by the user in this time span.
-	TotalCommitContributions int `json:"totalCommitContributions"`
-	// A count of contributions made by the user that the viewer cannot access. Only
-	// non-zero when the user has chosen to share their private contribution counts.
-	RestrictedContributionsCount int `json:"restrictedContributionsCount"`
-}
-
-// GetTotalCommitContributions returns userInfoUserContributionsCollection.TotalCommitContributions, and is useful for accessing the field via an interface.
-func (v *userInfoUserContributionsCollection) GetTotalCommitContributions() int {
-	return v.TotalCommitContributions
-}
-
-// GetRestrictedContributionsCount returns userInfoUserContributionsCollection.RestrictedContributionsCount, and is useful for accessing the field via an interface.
-func (v *userInfoUserContributionsCollection) GetRestrictedContributionsCount() int {
-	return v.RestrictedContributionsCount
-}
 
 // userInfoUserIssuesIssueConnection includes the requested fields of the GraphQL type IssueConnection.
 // The GraphQL type's documentation follows.
@@ -427,10 +398,6 @@ func contributionsView(
 const userInfo_Operation = `
 query userInfo ($username: String!) {
 	user(login: $username) {
-		contributionsCollection {
-			totalCommitContributions
-			restrictedContributionsCount
-		}
 		pullRequests {
 			totalCount
 		}

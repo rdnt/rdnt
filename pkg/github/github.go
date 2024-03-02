@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	_ "github.com/Khan/genqlient/generate"
 	"github.com/Khan/genqlient/graphql"
 	githubcontrib "github.com/rdnt/contribs-graph/github"
 )
@@ -114,10 +115,10 @@ func (c *Client) UserStats(ctx context.Context,
 	}
 
 	stats := Stats{
-		TotalContribs:   resp.User.ContributionsCollection.TotalCommitContributions,
-		PrivateContribs: resp.User.ContributionsCollection.RestrictedContributionsCount,
-		PullRequests:    resp.User.PullRequests.TotalCount,
-		Issues:          resp.User.Issues.TotalCount,
+		//TotalContribs:   resp.User.ContributionsCollection.TotalCommitContributions,
+		//PrivateContribs: resp.User.ContributionsCollection.RestrictedContributionsCount,
+		PullRequests: resp.User.PullRequests.TotalCount,
+		Issues:       resp.User.Issues.TotalCount,
 	}
 
 	return stats, nil
