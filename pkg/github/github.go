@@ -7,7 +7,7 @@ import (
 
 	_ "github.com/Khan/genqlient/generate"
 	"github.com/Khan/genqlient/graphql"
-	_ "github.com/agnivade/levenshtein"
+	githubcontrib "github.com/rdnt/contribs-graph/github"
 )
 
 //go:generate go run github.com/Khan/genqlient genql.yaml
@@ -52,36 +52,51 @@ type Contributions struct {
 type Contribution struct {
 	Count int
 	Color string
-	Date  string
 }
 
-func (c *Client) ContributionsView(ctx context.Context,
-	username string, from, to time.Time,
-) (Contributions, error) {
-	resp, err := contributionsView(ctx, c.gql, username, from, to)
+func (c *Client) GetContributions(ctx context.Context, user string, from, to time.Time) (githubcontrib.ContributionsResponse, error) {
+	resp, err := contributionsView(ctx, c.gql, user, from, to)
 	if err != nil {
-		return Contributions{}, err
+		return githubcontrib.ContributionsResponse{}, err
 	}
 
-	contributions := Contributions{
-		IsHalloween: resp.User.ContributionsCollection.ContributionCalendar.IsHalloween,
-		//Commits:      resp.User.ContributionsCollection.TotalCommitContributions,
-		//Issues:       resp.User.ContributionsCollection.TotalIssueContributions,
-		//PullRequests: resp.User.ContributionsCollection.TotalPullRequestContributions,
-		//Reviews:      resp.User.ContributionsCollection.TotalPullRequestReviewContributions,
-		//Total:        resp.User.ContributionsCollection.ContributionCalendar.TotalContributions,
+	isHaloween := resp.User.ContributionsCollection.ContributionCalendar.IsHalloween
+
+	contribs := githubcontrib.ContributionsResponse{
+		IsHalloween: isHaloween,
 	}
 
 	for _, w := range resp.User.ContributionsCollection.ContributionCalendar.Weeks {
 		for _, d := range w.ContributionDays {
-			contributions.Contributions = append(contributions.Contributions, Contribution{
+			contribs.Contributions = append(contribs.Contributions, githubcontrib.Contribution{
 				Count: d.ContributionCount,
-				Color: d.Color,
+				Color: normalizeColor(d.Color, isHaloween),
 			})
 		}
 	}
 
-	return contributions, nil
+	return contribs, nil
+}
+
+func normalizeColor(color string, haloween bool) string {
+	if !haloween {
+		return color
+	}
+
+	switch color {
+	case "#ebedf0":
+		return "#ebedf0"
+	case "#ffee4a":
+		return "#9be9a8"
+	case "#ffc501":
+		return "#40c463"
+	case "#fe9600":
+		return "#30a14e"
+	case "#03001c":
+		return "#216e39"
+	default:
+		return "#ebedf0"
+	}
 }
 
 type Stats struct {
