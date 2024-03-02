@@ -2,6 +2,7 @@ package contributions
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"time"
 
@@ -48,13 +49,20 @@ func (c *Contributions) Run() error {
 }
 
 func (c *Contributions) generateContributionsGraph(ctx context.Context) error {
-	from := time.Now().UTC().AddDate(-1, 0, -7)
-	to := time.Now().UTC()
+	now := time.Now().UTC()
 
-	contribsView, err := c.graphqlClient.ContributionsView(ctx, c.username, from, to)
+	weeksInYear := 52
+	fromOffset := (weeksInYear-1)*7 + int(now.Weekday())
+
+	from := now.AddDate(0, 0, -fromOffset)
+
+	contribsView, err := c.graphqlClient.ContributionsView(ctx, c.username, from, now)
 	if err != nil {
 		return err
 	}
+
+	fmt.Println(len(contribsView.Contributions))
+	fmt.Println(contribsView.Contributions[0].Date, contribsView.Contributions[len(contribsView.Contributions)-1].Date)
 
 	//stats, err := c.graphqlClient.UserStats(ctx, c.username)
 	//if err != nil {

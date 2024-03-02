@@ -52,6 +52,7 @@ type Contributions struct {
 type Contribution struct {
 	Count int
 	Color string
+	Date  string
 }
 
 func (c *Client) ContributionsView(ctx context.Context,
@@ -99,10 +100,10 @@ func (c *Client) UserStats(ctx context.Context,
 	}
 
 	stats := Stats{
-		TotalContribs:   resp.User.ContributionsCollection.TotalCommitContributions,
-		PrivateContribs: resp.User.ContributionsCollection.RestrictedContributionsCount,
-		PullRequests:    resp.User.PullRequests.TotalCount,
-		Issues:          resp.User.Issues.TotalCount,
+		//TotalContribs:   resp.User.ContributionsCollection.TotalCommitContributions,
+		//PrivateContribs: resp.User.ContributionsCollection.RestrictedContributionsCount,
+		PullRequests: resp.User.PullRequests.TotalCount,
+		Issues:       resp.User.Issues.TotalCount,
 	}
 
 	return stats, nil
