@@ -17,11 +17,11 @@ import (
 	githubOauth "golang.org/x/oauth2/github"
 	spotifyOauth "golang.org/x/oauth2/spotify"
 
-	"github.com/rdnt/rdnt/internal/presence"
 	"github.com/rdnt/rdnt/pkg/github"
 	authn "github.com/rdnt/rdnt/pkg/oauth"
 	"github.com/rdnt/rdnt/pkg/secretsmanager"
 	"github.com/rdnt/rdnt/pkg/spotify"
+	"github.com/rdnt/rdnt/presence"
 )
 
 func main() {
